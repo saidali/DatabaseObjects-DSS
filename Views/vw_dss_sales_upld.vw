@@ -1,0 +1,73 @@
+DROP VIEW DSS.VW_DSS_SALES_UPLD;
+
+CREATE OR REPLACE FORCE VIEW DSS.VW_DSS_SALES_UPLD
+(
+    REF_NO1
+   ,HEADERSEQ
+   ,OPERATING_UNIT
+   ,ORGANIZATION_ID
+   ,LOCATION_CODE
+   ,TRANSACTION_NO
+   ,TRANSACTION_DATE
+   ,TRANSACTION_TYPE
+   ,PARTY_CODE
+   ,PARTY_NAME
+   ,PARTY_SITE_NUMBER
+   ,REMARKS
+   ,REF_NO2
+   ,NET_AMOUNT
+   ,STATUS
+   ,INTF_YN
+   ,CREATE_DATE
+   ,CREATE_BY
+   ,MODIFY_DATE
+   ,MODIFY_BY
+   ,LINESEQ
+   ,LINE_NUM
+   ,INVENTORY_ITEM_ID
+   ,PRODUCT_CODE
+   ,PRODUCT_UOM
+   ,QTY
+   ,LC_PRICE
+   ,REFERENCE
+   ,CODE_COMBINATION
+   ,COMMENTS
+   ,TOTAL_PRICE
+)
+AS
+    SELECT hd.REF_NO1
+          ,hd.HEADERSEQ
+          ,hd.OPERATING_UNIT
+          ,hd.ORGANIZATION_ID
+          ,hd.LOCATION_CODE
+          ,hd.TRANSACTION_NO
+          ,hd.TRANSACTION_DATE
+          ,hd.TRANSACTION_TYPE
+          ,hd.PARTY_CODE
+          ,hd.PARTY_NAME
+          ,hd.PARTY_SITE_NUMBER
+          ,hd.REMARKS
+          ,hd.REF_NO2
+          ,hd.NET_AMOUNT
+          ,hd.STATUS
+          ,hd.INTF_YN
+          ,hd.CREATE_DATE
+          ,hd.CREATE_BY
+          ,hd.MODIFY_DATE
+          ,hd.MODIFY_BY
+          ,dt.LINESEQ
+          ,dt.LINE_NUM
+          ,dt.INVENTORY_ITEM_ID
+          ,dt.PRODUCT_CODE
+          ,dt.PRODUCT_UOM
+          ,dt.QTY
+          ,dt.LC_PRICE
+          ,DT.ATTRIBUTE2
+          ,DT.ATTRIBUTE3
+          ,DT.RESATTRIBUTE2
+          ,DT.TOTAL_PRICE
+    FROM DSS_SALES_UPLD_HEAD hd
+         LEFT OUTER JOIN DSS_SALES_UPLD_DTL dt ON hd.HEADERSEQ = dt.HEADERSEQ;
+
+
+GRANT SELECT ON DSS.VW_DSS_SALES_UPLD TO SELDATA;

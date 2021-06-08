@@ -1,0 +1,65 @@
+DROP VIEW DSS.RPT_VW_NON_MAPPEDMODEL;
+
+CREATE OR REPLACE FORCE VIEW DSS.RPT_VW_NON_MAPPEDMODEL
+(
+    OPERATINGUNIT
+   ,ORGANIZATIONID
+   ,ORGANIZATION_NAME
+   ,BRAND
+   ,BRANDDESC
+   ,BASEBRAND
+   ,MODEL
+   ,MODELDESC
+   ,CAT
+   ,CATEGORY
+   ,SCAT
+   ,SCATEGORY
+   ,SSCAT
+   ,SSCATEGORY
+)
+AS
+    SELECT DISTINCT S.OPREATING_UNIT OperatingUnit
+                   ,S.ORGANIZATION_ID OrganizationId
+                   ,o.ORGANIZATION_NAME
+                   ,P.BRAND_CODE Brand
+                   ,b.CODE_DESCRIPTION BrandDesc
+                   ,NVL(p.ATTRIBUTE1, 'N/A') BaseBrand
+                   ,P.MODEL_CODE Model
+                   ,m.CODE_DESCRIPTION ModelDesc
+                   ,p.CATEGORY_CODE CAT
+                   ,ci.CODE_DESCRIPTION CATEGORY
+                   ,p.SUB_CATEGORY_CODE SCAT
+                   ,sci.CODE_DESCRIPTION SCATEGORY
+                   ,p.SUB_SUB_CATEGORY_CODE SSCAT
+                   ,ssci.CODE_DESCRIPTION SSCATEGORY
+    FROM dss_order_scan_serials s
+         LEFT JOIN DSS_PRODUCTS P
+             ON S.OPREATING_UNIT = P.OPERATING_UNIT
+                AND S.ORGANIZATION_ID = P.ORGANIZATION_ID
+                AND S.INVENTORY_ITEM_ID = P.INVENTORY_ITEM_ID
+         LEFT JOIN DSS_MODEL_MAPPING M ON P.MODEL_CODE = M.MODEL_CODE
+         LEFT JOIN DSS_ORGANIZATIONS o
+             ON S.ORGANIZATION_ID = o.ORGANIZATION_ID
+         LEFT JOIN DSS_MODEL_INFO m ON P.MODEL_CODE = m.CODEVALUE
+         LEFT JOIN DSS_BRAND_INFO b ON P.BRAND_CODE = b.CODEVALUE
+         LEFT JOIN DSS_CATEGORY_INFO ci ON p.CATEGORY_CODE = ci.CODEVALUE
+         LEFT JOIN DSS_SUB_CATEGORY_INFO sci
+             ON p.SUB_CATEGORY_CODE = sci.CODEVALUE
+         LEFT JOIN DSS_SUB_SUB_CATEGORY_INFO ssci
+             ON p.SUB_SUB_CATEGORY_CODE = ssci.CODEVALUE
+    WHERE 1 = 1
+          --          AND s.SCAN_SOURCE = 'DSS'
+          AND S.ORGANIZATION_ID != '1958'
+          --          AND p.CATEGORY_CODE NOT IN ('02', '06')
+          AND p.CATEGORY_CODE != '02'
+          AND p.CATEGORY_CODE != '06'
+          AND s.WARRANTY_YN = 'Y'
+          AND s.INF_YN = 'N'
+          AND M.VMODEL_SEQ IS NULL
+          AND P.MODEL_CODE != 'P2BEATHS'
+          AND P.MODEL_CODE != 'P2HLTDEV'
+          AND P.MODEL_CODE != 'CAMCOM6'
+    ORDER BY 1, 2, 3;
+
+
+GRANT SELECT ON DSS.RPT_VW_NON_MAPPEDMODEL TO SELDATA;

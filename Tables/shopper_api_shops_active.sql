@@ -1,0 +1,87 @@
+ALTER TABLE DSS.SHOPPER_API_SHOPS_ACTIVE
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE DSS.SHOPPER_API_SHOPS_ACTIVE CASCADE CONSTRAINTS;
+
+CREATE TABLE DSS.SHOPPER_API_SHOPS_ACTIVE
+(
+  ROWSEQ         NUMBER,
+  SHOPPERTRAKID  NUMBER,
+  CUSTOMERID     NUMBER,
+  CUSTOMER_NAME  VARCHAR2(300 BYTE),
+  ACTIVE         CHAR(1 BYTE)                   DEFAULT 'Y',
+  ATTRIBUTE1     VARCHAR2(100 BYTE),
+  ATTRIBUTE2     VARCHAR2(100 BYTE),
+  ATTRIBUTE3     VARCHAR2(100 BYTE)
+)
+TABLESPACE AXM_TS_WMS
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+MONITORING;
+
+
+--  There is no statement for index DSS.SYS_C00711821.
+--  The object is created when the parent object is created.
+
+--  There is no statement for index DSS.SYS_C00711822.
+--  The object is created when the parent object is created.
+
+CREATE OR REPLACE TRIGGER DSS.SHOPPER_API_SHOPS_ACTIVE_TRG
+BEFORE INSERT
+ON DSS.SHOPPER_API_SHOPS_ACTIVE
+REFERENCING NEW AS New OLD AS Old
+FOR EACH ROW
+BEGIN
+-- For Toad:  Highlight column ROWSEQ
+  :new.ROWSEQ := SHOPPER_API_SHOPS_ACTIVE_SEQ.nextval;
+END SHOPPER_API_SHOPS_ACTIVE_TRG;
+/
+
+
+ALTER TABLE DSS.SHOPPER_API_SHOPS_ACTIVE ADD (
+  PRIMARY KEY
+  (ROWSEQ)
+  USING INDEX
+    TABLESPACE AXM_TS_WMS
+    PCTFREE    10
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                PCTINCREASE      0
+                BUFFER_POOL      DEFAULT
+               )
+  ENABLE VALIDATE,
+  UNIQUE (CUSTOMERID)
+  USING INDEX
+    TABLESPACE AXM_TS_WMS
+    PCTFREE    10
+    INITRANS   2
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                PCTINCREASE      0
+                BUFFER_POOL      DEFAULT
+               )
+  ENABLE VALIDATE);
+
+GRANT SELECT ON DSS.SHOPPER_API_SHOPS_ACTIVE TO SELDATA;

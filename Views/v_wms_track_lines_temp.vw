@@ -1,0 +1,153 @@
+DROP VIEW DSS.V_WMS_TRACK_LINES_TEMP;
+
+CREATE OR REPLACE FORCE VIEW DSS.V_WMS_TRACK_LINES_TEMP
+(
+    JOBNO
+   ,CNT
+   ,COUNTRY_CODE
+   ,FRM_ORG_ID
+   ,FRM_ORGANIZATIONID
+   ,FRM_SUBINVENTORY_CODE
+   ,TO_ORG_ID
+   ,TO_ORGANIZATIONID
+   ,TO_SUBINVENTORY_CODE
+   ,CUSTOMER_ID
+   ,CUSTOMER_NUMBER
+   ,CUSTOMER_NAME
+   ,ORDERNUMBER
+   ,ORDER_DATE
+   ,ORDER_TYPE
+   ,INVENTORY_ITEM_ID
+   ,PRODUCT_CODE
+   ,PRODUCT_DESC
+   ,ORDER_QTY
+   ,DELIVERED_QTY
+   ,PICKED_QTY
+   ,CUSTOM_QTY
+   ,ERP_MODEL
+   ,ERP_BRAND
+   ,CATEGORYID
+   ,CATEGORYNAME
+   ,REPEATED
+   ,MAXLENGTH
+   ,MINLENGTH
+   ,ISDUAL
+   ,SERVICE_MODEL
+   ,SERVICE_BRAND
+   ,SERVICE_WARRANTY
+   ,WARRANTY_PERIOD
+   ,WARRANTY_END_DATE
+   ,SCAN_YN
+   ,WARRANTY_YN
+   ,PRINTING_YN
+   ,SHORTPIC_YN
+   ,SCANNING_TYPE
+   ,STATUS
+   ,INF_YN
+   ,CREATE_DATE
+   ,CREATE_BY
+)
+AS
+    SELECT JOBNO
+          ,COUNT(*)
+               CNT
+          ,COUNTRY_CODE
+          ,FRM_ORG_ID
+          ,FRM_ORGANIZATIONID
+          ,FRM_SUBINVENTORY_CODE
+          ,TO_ORG_ID
+          ,TO_ORGANIZATIONID
+          ,TO_SUBINVENTORY_CODE
+          ,CUSTOMER_ID
+          ,CUSTOMER_NUMBER
+          ,CUSTOMER_NAME
+          ,ORDERNUMBER
+          ,ORDER_DATE
+          ,CASE ORDER_TYPE
+               WHEN 'MOVEORDER'
+               THEN
+                   'MO'
+               WHEN 'SALESORDER'
+               THEN
+                   'SO'
+               ELSE
+                   ORDER_TYPE
+           END
+               ORDER_TYPE
+          ,INVENTORY_ITEM_ID
+          ,PRODUCT_CODE
+          ,PRODUCT_DESC
+          ,SUM(ORDER_QTY)
+               ORDER_QTY
+          ,SUM(DELIVERED_QTY)
+               DELIVERED_QTY
+          ,SUM(PICKED_QTY)
+               PICKED_QTY
+          ,SUM(CUSTOM_QTY)
+               CUSTOM_QTY
+          ,ERP_MODEL
+          ,ERP_BRAND
+          ,CATEGORYID
+          ,CATEGORYNAME
+          ,REPEATED
+          ,MAXLENGTH
+          ,MINLENGTH
+          ,ISDUAL
+          ,SERVICE_MODEL
+          ,SERVICE_BRAND
+          ,SERVICE_WARRANTY
+          ,WARRANTY_PERIOD
+          ,WARRANTY_END_DATE
+          ,SCAN_YN
+          ,WARRANTY_YN
+          ,PRINTING_YN
+          ,SHORTPIC_YN
+          ,SCANNING_TYPE
+          ,STATUS
+          ,INF_YN
+          ,CREATE_DATE
+          ,CREATE_BY
+    FROM WT_IMEI_TRACK_LINES@WMS
+    --WHERE ORDERNUMBER = V_ORDERNUMBER
+    GROUP BY JOBNO
+            ,COUNTRY_CODE
+            ,FRM_ORG_ID
+            ,FRM_ORGANIZATIONID
+            ,FRM_SUBINVENTORY_CODE
+            ,TO_ORG_ID
+            ,TO_ORGANIZATIONID
+            ,TO_SUBINVENTORY_CODE
+            ,CUSTOMER_ID
+            ,CUSTOMER_NUMBER
+            ,CUSTOMER_NAME
+            ,ORDERNUMBER
+            ,ORDER_DATE
+            ,ORDER_TYPE
+            ,INVENTORY_ITEM_ID
+            ,PRODUCT_CODE
+            ,PRODUCT_DESC
+            ,ERP_MODEL
+            ,ERP_BRAND
+            ,CATEGORYID
+            ,CATEGORYNAME
+            ,REPEATED
+            ,MAXLENGTH
+            ,MINLENGTH
+            ,ISDUAL
+            ,SERVICE_MODEL
+            ,SERVICE_BRAND
+            ,SERVICE_WARRANTY
+            ,WARRANTY_PERIOD
+            ,WARRANTY_END_DATE
+            ,SCAN_YN
+            ,WARRANTY_YN
+            ,PRINTING_YN
+            ,SHORTPIC_YN
+            ,SCANNING_TYPE
+            ,STATUS
+            ,INF_YN
+            ,CREATE_DATE
+            ,CREATE_BY;
+
+
+GRANT SELECT ON DSS.V_WMS_TRACK_LINES_TEMP TO SELDATA;

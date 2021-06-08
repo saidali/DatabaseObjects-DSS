@@ -1,0 +1,168 @@
+DROP VIEW DSS.V_ORDER_SCAN_LINES_WITHBR;
+
+CREATE OR REPLACE FORCE VIEW DSS.V_ORDER_SCAN_LINES_WITHBR
+(
+    JOBID
+   ,LINEID
+   ,MERGED
+   ,LINESEQ
+   ,OPREATING_UNIT
+   ,ORGANIZATION_ID
+   ,ORDER_TYPE
+   ,ORDER_NUMBER
+   ,ORDER_DATE
+   ,INVENTORY_ITEM_ID
+   ,PRODUCT_CODE
+   ,CAETGORY_ID
+   ,ORDER_QTY
+   ,DELIVERED_QTY
+   ,PICKED_QTY
+   ,SCANNED_QTY
+   ,CUSTOM_QTY
+   ,WMS_SYNC
+   ,SCAN_YN
+   ,WARRANTYPRINT_YN
+   ,WARRANTY_YN
+   ,WARRANTY_SEQ
+   ,WARRANTY_CODE
+   ,CREATE_BY
+   ,MODIFY_BY
+   ,CREATE_DATE
+   ,MODIFY_DATE
+   ,EXPIRY_DATE
+   ,EXPIRY_DAYS
+   ,EDITABLE_YN
+   ,ARCHIVED_YN
+   ,ACTIVE_YN
+   ,STATUS_YN
+   ,HAS_SERIALS
+   ,BARCODES
+   ,DESCRIPTION
+   ,MODEL_CODE
+   ,COLOUR_CODE
+   ,BRAND
+   ,BASE_BRAND
+   ,CATEGORY_CODE
+   ,CATEGORY_DESC
+   ,CATEGORY2_CODE
+   ,CATEGORY2_DESC
+   ,CATEGORY3_CODE
+   ,CATEGORY3_DESC
+   ,PURCHASETYPE
+   ,NO_YEARS
+   ,NO_MONTHS
+   ,NO_DAYS
+   ,WMS_ENABLED
+   ,WARRANTYGROUP
+)
+AS
+    SELECT LIN.JOBID
+          ,LIN.LINEID
+          ,LIN.MERGED
+          ,LIN.LINESEQ
+          ,LIN.OPREATING_UNIT
+          ,LIN.ORGANIZATION_ID
+          ,LIN.ORDER_TYPE
+          ,LIN.ORDER_NUMBER
+          ,HD.ORDER_DATE
+          ,LIN.INVENTORY_ITEM_ID
+          ,LIN.PRODUCT_CODE
+          ,LIN.CAETGORY_ID
+          ,LIN.ORDER_QTY
+          ,LIN.DELIVERED_QTY
+          ,LIN.PICKED_QTY
+          ,--SCD.SCANNED SCANNED_QTY,
+           (SELECT COUNT(*)
+            FROM DSS_ORDER_SCAN_SERIALS SC
+            WHERE SC.LINEID = LIN.LINEID AND SC.COLUMNINDEX = 1)
+               SCANNED_QTY
+          ,LIN.CUSTOM_QTY
+          ,COF.WMS_QTY_SYNC
+               WMS_SYNC
+          ,CASE    --WHEN NVL (LIN.SCAN_YN, SCAT.SCAN_REQUIRED) = 'Y' THEN 'Y'
+                WHEN NVL(SCAT.SCAN_REQUIRED, 'N') = 'Y' THEN 'Y' ELSE 'N' END
+               SCAN_YN
+          ,CASE
+               WHEN NVL(LIN.WARRANTYPRINT_YN, SCAT.ATTRIBUTE10) = 'Y'
+               THEN
+                   'Y'
+               ELSE
+                   'N'
+           END
+               WARRANTYPRINT_YN
+          ,LIN.WARRANTY_YN
+               WARRANTY_YN
+          ,LIN.WARRANTY_SEQ
+          ,WS.WARRANTY_CODE
+          ,LIN.CREATE_BY
+          ,LIN.MODIFY_BY
+          ,LIN.CREATE_DATE
+          ,LIN.MODIFY_DATE
+          ,LIN.EXPIRY_DATE
+          ,LIN.EXPIRY_DAYS
+          ,LIN.EDITABLE_YN
+          ,LIN.ARCHIVED_YN
+          ,LIN.ACTIVE_YN
+          ,LIN.STATUS_YN
+          ,LIN.HAS_SERIALS
+          ,GET_INLINE_BARCODE2(LIN.LINEID
+                              ,LIN.INVENTORY_ITEM_ID
+                              ,LIN.PRODUCT_CODE
+                              ,LIN.ORGANIZATION_ID)
+               BARCODES
+          ,PO.DESCRIPTION
+          ,PO.MODEL_CODE
+          ,PO.COLOUR_CODE
+          ,SCAT.BRAND
+          ,PO.ATTRIBUTE1
+               BASE_BRAND
+          ,SCAT.CATEGORY_CODE
+          ,CAT1.CODE_DESCRIPTION
+               CATEGORY_DESC
+          ,SCAT.SUB_CATEGORY_CODE
+               CATEGORY2_CODE
+          ,CAT2.CODE_DESCRIPTION
+               CATEGORY2_DESC
+          ,SCAT.SUB_SUB_CATEGORY_CODE
+               CATEGORY3_CODE
+          ,CAT3.CODE_DESCRIPTION
+               CATEGORY3_DESC
+          ,SCAT.PURCHASETYPE
+          ,WS.NO_YEARS
+          ,WS.NO_MONTHS
+          ,WS.NO_DAYS
+          ,WS.WMS_ENABLED
+          ,WS.WARRANTY_CATG_FLAG
+               WarrantyGroup
+    FROM DSS_ORDER_SCAN_LINES LIN
+         LEFT OUTER JOIN DSS_ORDER_SCAN_HEADER HD ON LIN.JOBID = HD.JOBID
+         LEFT OUTER JOIN TK_ORG_ORDER_CONFIG COF
+             ON LIN.ORDER_TYPE = COF.ORDER_SHORT_CODE
+                AND LIN.ORGANIZATION_ID = COF.ORGANIZATION_ID
+         LEFT OUTER JOIN TK_CATEGORIES_CONFIG SCAT
+             ON LIN.CAETGORY_ID = SCAT.CATEGORY_ID
+         LEFT OUTER JOIN DSS_CATEGORY_INFO CAT1
+             ON SCAT.CATEGORY_CODE = CAT1.CODEVALUE
+         LEFT OUTER JOIN DSS_SUB_CATEGORY_INFO CAT2
+             ON SCAT.SUB_CATEGORY_CODE = CAT2.CODEVALUE
+         LEFT OUTER JOIN DSS_SUB_SUB_CATEGORY_INFO CAT3
+             ON SCAT.SUB_SUB_CATEGORY_CODE = CAT3.CODEVALUE
+         LEFT OUTER JOIN DSS_PRODUCTS PO
+             ON LIN.ORGANIZATION_ID = PO.ORGANIZATION_ID
+                AND LIN.INVENTORY_ITEM_ID = PO.INVENTORY_ITEM_ID
+         LEFT OUTER JOIN DSS_SERVICE_WARRANTY WS
+             ON LIN.WARRANTY_SEQ = WS.WARRANTY_SEQ
+    --            LEFT OUTER JOIN (  SELECT JOBID,
+    --                                      LINEID,
+    --                                      PRODUCT_CODE,
+    --                                      COUNT (*) SCANNED
+    --                                 --- SUM (NVL (ATTRIBUTE1, 0)) NOIMEISCAN
+    --                                 FROM DSS_ORDER_SCAN_SERIALS PARTITION(SERIALS_2013) S
+    --                                WHERE S.COLUMNINDEX = 1
+    --                             GROUP BY JOBID, LINEID, PRODUCT_CODE) SCD
+    --               ON SCD.JOBID = LIN.JOBID AND SCD.LINEID = LIN.LINEID
+    -- WHERE LIN.ORDER_NUMBER = 13742977
+    ORDER BY LIN.LINEID;
+
+
+GRANT SELECT ON DSS.V_ORDER_SCAN_LINES_WITHBR TO SELDATA;

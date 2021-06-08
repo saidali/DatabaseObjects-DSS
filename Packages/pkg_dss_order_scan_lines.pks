@@ -1,0 +1,562 @@
+DROP PACKAGE DSS.PKG_DSS_ORDER_SCAN_LINES;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_DSS_ORDER_SCAN_LINES
+AS
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LINEID    IN     DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_Update (
+      p_JOBID               IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID              IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_MERGED              IN DSS_ORDER_SCAN_LINES.MERGED%TYPE,
+      p_LINESEQ             IN DSS_ORDER_SCAN_LINES.LINESEQ%TYPE,
+      p_OPREATING_UNIT      IN DSS_ORDER_SCAN_LINES.OPREATING_UNIT%TYPE,
+      p_ORGANIZATION_ID     IN DSS_ORDER_SCAN_LINES.ORGANIZATION_ID%TYPE,
+      p_ORDER_TYPE          IN DSS_ORDER_SCAN_LINES.ORDER_TYPE%TYPE,
+      p_ORDER_NUMBER        IN DSS_ORDER_SCAN_LINES.ORDER_NUMBER%TYPE,
+      p_INVENTORY_ITEM_ID   IN DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE,
+      p_PRODUCT_CODE        IN DSS_ORDER_SCAN_LINES.PRODUCT_CODE%TYPE,
+      p_CAETGORY_ID         IN DSS_ORDER_SCAN_LINES.CAETGORY_ID%TYPE,
+      p_ORDER_QTY           IN DSS_ORDER_SCAN_LINES.ORDER_QTY%TYPE,
+      p_DELIVERED_QTY       IN DSS_ORDER_SCAN_LINES.DELIVERED_QTY%TYPE,
+      p_PICKED_QTY          IN DSS_ORDER_SCAN_LINES.PICKED_QTY%TYPE,
+      p_SCANNED_QTY         IN DSS_ORDER_SCAN_LINES.SCANNED_QTY%TYPE,
+      p_CUSTOM_QTY          IN DSS_ORDER_SCAN_LINES.CUSTOM_QTY%TYPE,
+      p_WMS_SYNC            IN DSS_ORDER_SCAN_LINES.WMS_SYNC%TYPE,
+      p_SCAN_YN             IN DSS_ORDER_SCAN_LINES.SCAN_YN%TYPE,
+      p_WARRANTYPRINT_YN    IN DSS_ORDER_SCAN_LINES.WARRANTYPRINT_YN%TYPE,
+      p_WARRANTY_YN         IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ        IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE       IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_CREATE_BY           IN DSS_ORDER_SCAN_LINES.CREATE_BY%TYPE,
+      p_MODIFY_BY           IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      p_CREATE_DATE         IN DSS_ORDER_SCAN_LINES.CREATE_DATE%TYPE,
+      p_MODIFY_DATE         IN DSS_ORDER_SCAN_LINES.MODIFY_DATE%TYPE,
+      p_EXPIRY_DATE         IN DSS_ORDER_SCAN_LINES.EXPIRY_DATE%TYPE,
+      p_EXPIRY_DAYS         IN DSS_ORDER_SCAN_LINES.EXPIRY_DAYS%TYPE,
+      p_EDITABLE_YN         IN DSS_ORDER_SCAN_LINES.EDITABLE_YN%TYPE,
+      p_ARCHIVED_YN         IN DSS_ORDER_SCAN_LINES.ARCHIVED_YN%TYPE,
+      p_ACTIVE_YN           IN DSS_ORDER_SCAN_LINES.ACTIVE_YN%TYPE,
+      p_STATUS_YN           IN DSS_ORDER_SCAN_LINES.STATUS_YN%TYPE,
+      p_HAS_SERIALS         IN DSS_ORDER_SCAN_LINES.HAS_SERIALS%TYPE,
+      p_BARCODES            IN DSS_ORDER_SCAN_LINES.BARCODES%TYPE,
+      p_ATTRIBUTE1          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10         IN DSS_ORDER_SCAN_LINES.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Insert (
+      p_JOBID               IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID              IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_MERGED              IN DSS_ORDER_SCAN_LINES.MERGED%TYPE,
+      p_LINESEQ             IN DSS_ORDER_SCAN_LINES.LINESEQ%TYPE,
+      p_OPREATING_UNIT      IN DSS_ORDER_SCAN_LINES.OPREATING_UNIT%TYPE,
+      p_ORGANIZATION_ID     IN DSS_ORDER_SCAN_LINES.ORGANIZATION_ID%TYPE,
+      p_ORDER_TYPE          IN DSS_ORDER_SCAN_LINES.ORDER_TYPE%TYPE,
+      p_ORDER_NUMBER        IN DSS_ORDER_SCAN_LINES.ORDER_NUMBER%TYPE,
+      p_INVENTORY_ITEM_ID   IN DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE,
+      p_PRODUCT_CODE        IN DSS_ORDER_SCAN_LINES.PRODUCT_CODE%TYPE,
+      p_CAETGORY_ID         IN DSS_ORDER_SCAN_LINES.CAETGORY_ID%TYPE,
+      p_ORDER_QTY           IN DSS_ORDER_SCAN_LINES.ORDER_QTY%TYPE,
+      p_DELIVERED_QTY       IN DSS_ORDER_SCAN_LINES.DELIVERED_QTY%TYPE,
+      p_PICKED_QTY          IN DSS_ORDER_SCAN_LINES.PICKED_QTY%TYPE,
+      p_SCANNED_QTY         IN DSS_ORDER_SCAN_LINES.SCANNED_QTY%TYPE,
+      p_CUSTOM_QTY          IN DSS_ORDER_SCAN_LINES.CUSTOM_QTY%TYPE,
+      p_WMS_SYNC            IN DSS_ORDER_SCAN_LINES.WMS_SYNC%TYPE,
+      p_SCAN_YN             IN DSS_ORDER_SCAN_LINES.SCAN_YN%TYPE,
+      p_WARRANTYPRINT_YN    IN DSS_ORDER_SCAN_LINES.WARRANTYPRINT_YN%TYPE,
+      p_WARRANTY_YN         IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ        IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE       IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_CREATE_BY           IN DSS_ORDER_SCAN_LINES.CREATE_BY%TYPE,
+      p_MODIFY_BY           IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      p_CREATE_DATE         IN DSS_ORDER_SCAN_LINES.CREATE_DATE%TYPE,
+      p_MODIFY_DATE         IN DSS_ORDER_SCAN_LINES.MODIFY_DATE%TYPE,
+      p_EXPIRY_DATE         IN DSS_ORDER_SCAN_LINES.EXPIRY_DATE%TYPE,
+      p_EXPIRY_DAYS         IN DSS_ORDER_SCAN_LINES.EXPIRY_DAYS%TYPE,
+      p_EDITABLE_YN         IN DSS_ORDER_SCAN_LINES.EDITABLE_YN%TYPE,
+      p_ARCHIVED_YN         IN DSS_ORDER_SCAN_LINES.ARCHIVED_YN%TYPE,
+      p_ACTIVE_YN           IN DSS_ORDER_SCAN_LINES.ACTIVE_YN%TYPE,
+      p_STATUS_YN           IN DSS_ORDER_SCAN_LINES.STATUS_YN%TYPE,
+      p_HAS_SERIALS         IN DSS_ORDER_SCAN_LINES.HAS_SERIALS%TYPE,
+      p_BARCODES            IN DSS_ORDER_SCAN_LINES.BARCODES%TYPE,
+      p_ATTRIBUTE1          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10         IN DSS_ORDER_SCAN_LINES.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Delete (p_LINEID IN DSS_ORDER_SCAN_LINES.LINEID%TYPE);
+
+--   PROCEDURE P_Update_wty_serials (
+--      p_JOBID               IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+--      p_LINEID              IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+--      p_INVENTORY_ITEM_ID   IN DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE,
+--      p_WARRANTY_YN         IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+--      p_WARRANTY_SEQ        IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+--      p_WARRANTY_CODE       IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+--      p_MODIFY_BY           IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE);
+
+   PROCEDURE P_UpdateWithLog (
+      p_JOBID           IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID          IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_WARRANTY_YN     IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ    IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE   IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_MODIFY_BY       IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      UP_OLD_VALUE      IN VARCHAR2,
+      UP_REMARKS        IN VARCHAR2,
+      UP_COLUMN_NAME    IN VARCHAR2,
+      UP_STATUS         IN VARCHAR2);
+END PKG_DSS_ORDER_SCAN_LINES;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_DSS_ORDER_SCAN_LINES;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_DSS_ORDER_SCAN_LINES
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LINEID    IN     DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT JOBID,
+                LINEID,
+                MERGED,
+                LINESEQ,
+                OPREATING_UNIT,
+                ORGANIZATION_ID,
+                ORDER_TYPE,
+                ORDER_NUMBER,
+                INVENTORY_ITEM_ID,
+                PRODUCT_CODE,
+                CAETGORY_ID,
+                ORDER_QTY,
+                DELIVERED_QTY,
+                PICKED_QTY,
+                SCANNED_QTY,
+                CUSTOM_QTY,
+                WMS_SYNC,
+                SCAN_YN,
+                WARRANTYPRINT_YN,
+                WARRANTY_YN,
+                WARRANTY_SEQ,
+                WARRANTY_CODE,
+                CREATE_BY,
+                MODIFY_BY,
+                CREATE_DATE,
+                MODIFY_DATE,
+                EXPIRY_DATE,
+                EXPIRY_DAYS,
+                EDITABLE_YN,
+                ARCHIVED_YN,
+                ACTIVE_YN,
+                STATUS_YN,
+                HAS_SERIALS,
+                BARCODES,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_ORDER_SCAN_LINES
+          WHERE LINEID = p_LINEID;
+   END P_LoadByPrimaryKey;
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT JOBID,
+                LINEID,
+                MERGED,
+                LINESEQ,
+                OPREATING_UNIT,
+                ORGANIZATION_ID,
+                ORDER_TYPE,
+                ORDER_NUMBER,
+                INVENTORY_ITEM_ID,
+                PRODUCT_CODE,
+                CAETGORY_ID,
+                ORDER_QTY,
+                DELIVERED_QTY,
+                PICKED_QTY,
+                SCANNED_QTY,
+                CUSTOM_QTY,
+                WMS_SYNC,
+                SCAN_YN,
+                WARRANTYPRINT_YN,
+                WARRANTY_YN,
+                WARRANTY_SEQ,
+                WARRANTY_CODE,
+                CREATE_BY,
+                MODIFY_BY,
+                CREATE_DATE,
+                MODIFY_DATE,
+                EXPIRY_DATE,
+                EXPIRY_DAYS,
+                EDITABLE_YN,
+                ARCHIVED_YN,
+                ACTIVE_YN,
+                STATUS_YN,
+                HAS_SERIALS,
+                BARCODES,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_ORDER_SCAN_LINES;
+   END P_LoadAll;
+
+
+   PROCEDURE P_Update (
+      p_JOBID               IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID              IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_MERGED              IN DSS_ORDER_SCAN_LINES.MERGED%TYPE,
+      p_LINESEQ             IN DSS_ORDER_SCAN_LINES.LINESEQ%TYPE,
+      p_OPREATING_UNIT      IN DSS_ORDER_SCAN_LINES.OPREATING_UNIT%TYPE,
+      p_ORGANIZATION_ID     IN DSS_ORDER_SCAN_LINES.ORGANIZATION_ID%TYPE,
+      p_ORDER_TYPE          IN DSS_ORDER_SCAN_LINES.ORDER_TYPE%TYPE,
+      p_ORDER_NUMBER        IN DSS_ORDER_SCAN_LINES.ORDER_NUMBER%TYPE,
+      p_INVENTORY_ITEM_ID   IN DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE,
+      p_PRODUCT_CODE        IN DSS_ORDER_SCAN_LINES.PRODUCT_CODE%TYPE,
+      p_CAETGORY_ID         IN DSS_ORDER_SCAN_LINES.CAETGORY_ID%TYPE,
+      p_ORDER_QTY           IN DSS_ORDER_SCAN_LINES.ORDER_QTY%TYPE,
+      p_DELIVERED_QTY       IN DSS_ORDER_SCAN_LINES.DELIVERED_QTY%TYPE,
+      p_PICKED_QTY          IN DSS_ORDER_SCAN_LINES.PICKED_QTY%TYPE,
+      p_SCANNED_QTY         IN DSS_ORDER_SCAN_LINES.SCANNED_QTY%TYPE,
+      p_CUSTOM_QTY          IN DSS_ORDER_SCAN_LINES.CUSTOM_QTY%TYPE,
+      p_WMS_SYNC            IN DSS_ORDER_SCAN_LINES.WMS_SYNC%TYPE,
+      p_SCAN_YN             IN DSS_ORDER_SCAN_LINES.SCAN_YN%TYPE,
+      p_WARRANTYPRINT_YN    IN DSS_ORDER_SCAN_LINES.WARRANTYPRINT_YN%TYPE,
+      p_WARRANTY_YN         IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ        IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE       IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_CREATE_BY           IN DSS_ORDER_SCAN_LINES.CREATE_BY%TYPE,
+      p_MODIFY_BY           IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      p_CREATE_DATE         IN DSS_ORDER_SCAN_LINES.CREATE_DATE%TYPE,
+      p_MODIFY_DATE         IN DSS_ORDER_SCAN_LINES.MODIFY_DATE%TYPE,
+      p_EXPIRY_DATE         IN DSS_ORDER_SCAN_LINES.EXPIRY_DATE%TYPE,
+      p_EXPIRY_DAYS         IN DSS_ORDER_SCAN_LINES.EXPIRY_DAYS%TYPE,
+      p_EDITABLE_YN         IN DSS_ORDER_SCAN_LINES.EDITABLE_YN%TYPE,
+      p_ARCHIVED_YN         IN DSS_ORDER_SCAN_LINES.ARCHIVED_YN%TYPE,
+      p_ACTIVE_YN           IN DSS_ORDER_SCAN_LINES.ACTIVE_YN%TYPE,
+      p_STATUS_YN           IN DSS_ORDER_SCAN_LINES.STATUS_YN%TYPE,
+      p_HAS_SERIALS         IN DSS_ORDER_SCAN_LINES.HAS_SERIALS%TYPE,
+      p_BARCODES            IN DSS_ORDER_SCAN_LINES.BARCODES%TYPE,
+      p_ATTRIBUTE1          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10         IN DSS_ORDER_SCAN_LINES.ATTRIBUTE10%TYPE)
+   IS
+      V_JOBID                DSS_ORDER_SCAN_LINES.JOBID%TYPE;
+      V_WARRANTY_YN          DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE;
+      V_WARRANTY_SEQ         DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE;
+      V_WARRANTY_CODE        DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE;
+      V_INVENTORY_ITEM_ID    DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE;
+      V_WARRANTY_STARTDATE   DATE;
+      V_WARRANTY_ENDATE      DATE;
+      NO_YEARS               NUMBER;
+      NO_MONTHS              NUMBER;
+      NO_DAYS                NUMBER;
+   BEGIN
+      UPDATE DSS_ORDER_SCAN_LINES
+         SET JOBID = p_JOBID,
+             LINEID = p_LINEID,
+             MERGED = p_MERGED,
+             LINESEQ = p_LINESEQ,
+             OPREATING_UNIT = p_OPREATING_UNIT,
+             ORGANIZATION_ID = p_ORGANIZATION_ID,
+             ORDER_TYPE = p_ORDER_TYPE,
+             ORDER_NUMBER = p_ORDER_NUMBER,
+             INVENTORY_ITEM_ID = p_INVENTORY_ITEM_ID,
+             PRODUCT_CODE = p_PRODUCT_CODE,
+             CAETGORY_ID = p_CAETGORY_ID,
+             ORDER_QTY = p_ORDER_QTY,
+             DELIVERED_QTY = p_DELIVERED_QTY,
+             PICKED_QTY = p_PICKED_QTY,
+             SCANNED_QTY = p_SCANNED_QTY,
+             CUSTOM_QTY = p_CUSTOM_QTY,
+             WMS_SYNC = p_WMS_SYNC,
+             SCAN_YN = p_SCAN_YN,
+             WARRANTYPRINT_YN = p_WARRANTYPRINT_YN,
+             WARRANTY_YN = p_WARRANTY_YN,
+             WARRANTY_SEQ = p_WARRANTY_SEQ,
+             WARRANTY_CODE = p_WARRANTY_CODE,
+             CREATE_BY = p_CREATE_BY,
+             MODIFY_BY = p_MODIFY_BY,
+             --- CREATE_DATE = p_CREATE_DATE,
+             MODIFY_DATE = SYSDATE,
+             EXPIRY_DATE = p_EXPIRY_DATE,
+             EXPIRY_DAYS = p_EXPIRY_DAYS,
+             EDITABLE_YN = p_EDITABLE_YN,
+             ARCHIVED_YN = p_ARCHIVED_YN,
+             ACTIVE_YN = p_ACTIVE_YN,
+             STATUS_YN = p_STATUS_YN,
+             HAS_SERIALS = p_HAS_SERIALS,
+             BARCODES = p_BARCODES,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5,
+             ATTRIBUTE6 = p_ATTRIBUTE6,
+             ATTRIBUTE7 = p_ATTRIBUTE7,
+             ATTRIBUTE8 = p_ATTRIBUTE8,
+             ATTRIBUTE9 = p_ATTRIBUTE9,
+             ATTRIBUTE10 = p_ATTRIBUTE10
+       WHERE LINEID = p_LINEID;
+
+
+      SELECT JOBID,
+             INVENTORY_ITEM_ID,
+             WARRANTY_YN,
+             WARRANTY_SEQ,
+             WARRANTY_CODE
+        INTO V_JOBID,
+             V_INVENTORY_ITEM_ID,
+             V_WARRANTY_YN,
+             V_WARRANTY_SEQ,
+             V_WARRANTY_CODE
+        FROM DSS_ORDER_SCAN_LINES
+       WHERE LINEID = p_LINEID;
+
+      IF (V_WARRANTY_YN = 'Y')
+      THEN
+         UPDATE DSS_ORDER_SCAN_HEADER
+            SET WARRANTY_YN = 'Y', MODIFY_DATE = SYSDATE
+          WHERE     JOBID = p_JOBID
+                AND ORDER_TYPE = p_ORDER_TYPE
+                AND ORDER_NUMBER = p_ORDER_NUMBER;
+      END IF;
+
+
+
+      UPDATE DSS_ORDER_SCAN_SERIALS
+         SET WARRANTY_YN = V_WARRANTY_YN,
+             WARRANTY_SEQ = NVL (V_WARRANTY_SEQ, 0),
+             WARRANTY_CODE = V_WARRANTY_CODE,
+             INF_YN = 'N',
+             INF_DATE = NULL,
+             UPDATE_DATE = SYSDATE,
+             UPDATE_BY = p_MODIFY_BY
+       WHERE     JOBID = V_JOBID
+             AND LINEID = p_LINEID
+             AND INVENTORY_ITEM_ID = V_INVENTORY_ITEM_ID;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_JOBID               IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID              IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_MERGED              IN DSS_ORDER_SCAN_LINES.MERGED%TYPE,
+      p_LINESEQ             IN DSS_ORDER_SCAN_LINES.LINESEQ%TYPE,
+      p_OPREATING_UNIT      IN DSS_ORDER_SCAN_LINES.OPREATING_UNIT%TYPE,
+      p_ORGANIZATION_ID     IN DSS_ORDER_SCAN_LINES.ORGANIZATION_ID%TYPE,
+      p_ORDER_TYPE          IN DSS_ORDER_SCAN_LINES.ORDER_TYPE%TYPE,
+      p_ORDER_NUMBER        IN DSS_ORDER_SCAN_LINES.ORDER_NUMBER%TYPE,
+      p_INVENTORY_ITEM_ID   IN DSS_ORDER_SCAN_LINES.INVENTORY_ITEM_ID%TYPE,
+      p_PRODUCT_CODE        IN DSS_ORDER_SCAN_LINES.PRODUCT_CODE%TYPE,
+      p_CAETGORY_ID         IN DSS_ORDER_SCAN_LINES.CAETGORY_ID%TYPE,
+      p_ORDER_QTY           IN DSS_ORDER_SCAN_LINES.ORDER_QTY%TYPE,
+      p_DELIVERED_QTY       IN DSS_ORDER_SCAN_LINES.DELIVERED_QTY%TYPE,
+      p_PICKED_QTY          IN DSS_ORDER_SCAN_LINES.PICKED_QTY%TYPE,
+      p_SCANNED_QTY         IN DSS_ORDER_SCAN_LINES.SCANNED_QTY%TYPE,
+      p_CUSTOM_QTY          IN DSS_ORDER_SCAN_LINES.CUSTOM_QTY%TYPE,
+      p_WMS_SYNC            IN DSS_ORDER_SCAN_LINES.WMS_SYNC%TYPE,
+      p_SCAN_YN             IN DSS_ORDER_SCAN_LINES.SCAN_YN%TYPE,
+      p_WARRANTYPRINT_YN    IN DSS_ORDER_SCAN_LINES.WARRANTYPRINT_YN%TYPE,
+      p_WARRANTY_YN         IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ        IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE       IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_CREATE_BY           IN DSS_ORDER_SCAN_LINES.CREATE_BY%TYPE,
+      p_MODIFY_BY           IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      p_CREATE_DATE         IN DSS_ORDER_SCAN_LINES.CREATE_DATE%TYPE,
+      p_MODIFY_DATE         IN DSS_ORDER_SCAN_LINES.MODIFY_DATE%TYPE,
+      p_EXPIRY_DATE         IN DSS_ORDER_SCAN_LINES.EXPIRY_DATE%TYPE,
+      p_EXPIRY_DAYS         IN DSS_ORDER_SCAN_LINES.EXPIRY_DAYS%TYPE,
+      p_EDITABLE_YN         IN DSS_ORDER_SCAN_LINES.EDITABLE_YN%TYPE,
+      p_ARCHIVED_YN         IN DSS_ORDER_SCAN_LINES.ARCHIVED_YN%TYPE,
+      p_ACTIVE_YN           IN DSS_ORDER_SCAN_LINES.ACTIVE_YN%TYPE,
+      p_STATUS_YN           IN DSS_ORDER_SCAN_LINES.STATUS_YN%TYPE,
+      p_HAS_SERIALS         IN DSS_ORDER_SCAN_LINES.HAS_SERIALS%TYPE,
+      p_BARCODES            IN DSS_ORDER_SCAN_LINES.BARCODES%TYPE,
+      p_ATTRIBUTE1          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9          IN DSS_ORDER_SCAN_LINES.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10         IN DSS_ORDER_SCAN_LINES.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      INSERT INTO DSS_ORDER_SCAN_LINES (JOBID,
+                                        LINEID,
+                                        MERGED,
+                                        LINESEQ,
+                                        OPREATING_UNIT,
+                                        ORGANIZATION_ID,
+                                        ORDER_TYPE,
+                                        ORDER_NUMBER,
+                                        INVENTORY_ITEM_ID,
+                                        PRODUCT_CODE,
+                                        CAETGORY_ID,
+                                        ORDER_QTY,
+                                        DELIVERED_QTY,
+                                        PICKED_QTY,
+                                        SCANNED_QTY,
+                                        CUSTOM_QTY,
+                                        WMS_SYNC,
+                                        SCAN_YN,
+                                        WARRANTYPRINT_YN,
+                                        WARRANTY_YN,
+                                        WARRANTY_SEQ,
+                                        WARRANTY_CODE,
+                                        CREATE_BY,
+                                        MODIFY_BY,
+                                        CREATE_DATE,
+                                        MODIFY_DATE,
+                                        EXPIRY_DATE,
+                                        EXPIRY_DAYS,
+                                        EDITABLE_YN,
+                                        ARCHIVED_YN,
+                                        ACTIVE_YN,
+                                        STATUS_YN,
+                                        HAS_SERIALS,
+                                        BARCODES,
+                                        ATTRIBUTE1,
+                                        ATTRIBUTE2,
+                                        ATTRIBUTE3,
+                                        ATTRIBUTE4,
+                                        ATTRIBUTE5,
+                                        ATTRIBUTE6,
+                                        ATTRIBUTE7,
+                                        ATTRIBUTE8,
+                                        ATTRIBUTE9,
+                                        ATTRIBUTE10)
+      VALUES (p_JOBID,
+              p_LINEID,
+              p_MERGED,
+              p_LINESEQ,
+              p_OPREATING_UNIT,
+              p_ORGANIZATION_ID,
+              p_ORDER_TYPE,
+              p_ORDER_NUMBER,
+              p_INVENTORY_ITEM_ID,
+              p_PRODUCT_CODE,
+              p_CAETGORY_ID,
+              p_ORDER_QTY,
+              p_DELIVERED_QTY,
+              p_PICKED_QTY,
+              p_SCANNED_QTY,
+              p_CUSTOM_QTY,
+              p_WMS_SYNC,
+              p_SCAN_YN,
+              p_WARRANTYPRINT_YN,
+              p_WARRANTY_YN,
+              p_WARRANTY_SEQ,
+              p_WARRANTY_CODE,
+              p_CREATE_BY,
+              p_MODIFY_BY,
+              p_CREATE_DATE,
+              SYSDATE,
+              p_EXPIRY_DATE,
+              p_EXPIRY_DAYS,
+              p_EDITABLE_YN,
+              p_ARCHIVED_YN,
+              p_ACTIVE_YN,
+              p_STATUS_YN,
+              p_HAS_SERIALS,
+              p_BARCODES,
+              p_ATTRIBUTE1,
+              p_ATTRIBUTE2,
+              p_ATTRIBUTE3,
+              p_ATTRIBUTE4,
+              p_ATTRIBUTE5,
+              p_ATTRIBUTE6,
+              p_ATTRIBUTE7,
+              p_ATTRIBUTE8,
+              p_ATTRIBUTE9,
+              p_ATTRIBUTE10);
+   END P_Insert;
+
+   PROCEDURE P_Delete (p_LINEID IN DSS_ORDER_SCAN_LINES.LINEID%TYPE)
+   IS
+   BEGIN
+
+
+      DELETE FROM DSS_ORDER_SCAN_LINES
+       WHERE LINEID = p_LINEID;
+   END P_Delete;
+
+
+
+   PROCEDURE P_UpdateWithLog (
+      p_JOBID           IN DSS_ORDER_SCAN_LINES.JOBID%TYPE,
+      p_LINEID          IN DSS_ORDER_SCAN_LINES.LINEID%TYPE,
+      p_WARRANTY_YN     IN DSS_ORDER_SCAN_LINES.WARRANTY_YN%TYPE,
+      p_WARRANTY_SEQ    IN DSS_ORDER_SCAN_LINES.WARRANTY_SEQ%TYPE,
+      p_WARRANTY_CODE   IN DSS_ORDER_SCAN_LINES.WARRANTY_CODE%TYPE,
+      p_MODIFY_BY       IN DSS_ORDER_SCAN_LINES.MODIFY_BY%TYPE,
+      UP_OLD_VALUE      IN VARCHAR2,
+      UP_REMARKS        IN VARCHAR2,
+      UP_COLUMN_NAME    IN VARCHAR2,
+      UP_STATUS         IN VARCHAR2)
+   IS
+   BEGIN
+      UPDATE DSS_ORDER_SCAN_LINES
+         SET WARRANTY_YN = p_WARRANTY_YN,
+             WARRANTY_SEQ = p_WARRANTY_SEQ,
+             WARRANTY_CODE = p_WARRANTY_CODE,
+             MODIFY_BY = p_MODIFY_BY,
+             MODIFY_DATE = SYSDATE
+       WHERE LINEID = p_LINEID;
+
+      PKG_DSS_LOG_ORDER_SCAN.ADD_LOG ('L',         -- CHANGES AT (L)INES LEVEL
+                                      'DSS_ORDER_SCAN_LINES',
+                                      UP_COLUMN_NAME,
+                                      p_LINEID,
+                                      UP_OLD_VALUE,
+                                      p_WARRANTY_SEQ,
+                                      UP_STATUS,
+                                      UP_REMARKS,
+                                      p_MODIFY_BY);
+   END P_UpdateWithLog;
+END PKG_DSS_ORDER_SCAN_LINES;
+/

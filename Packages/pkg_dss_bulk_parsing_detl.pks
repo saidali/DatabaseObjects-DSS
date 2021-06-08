@@ -1,0 +1,205 @@
+DROP PACKAGE DSS.PKG_DSS_BULK_PARSING_DETL;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_DSS_BULK_PARSING_DETL  as 
+
+PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur); 
+PROCEDURE P_LoadByPrimaryKey (    p_LINE_SEQ IN DSS_BULK_PARSING_DETL.LINE_SEQ%type,
+  outCursor OUT DSS.MYGEN.sqlcur); 
+PROCEDURE P_Update (    p_LINE_SEQ IN DSS_BULK_PARSING_DETL.LINE_SEQ%type,
+    p_CONFIG_ID IN DSS_BULK_PARSING_DETL.CONFIG_ID%type,
+    p_CONFIG_SEQ IN DSS_BULK_PARSING_DETL.CONFIG_SEQ%type,
+    p_FUNCTION_ID IN DSS_BULK_PARSING_DETL.FUNCTION_ID%type,
+    p_FUNCTION_NAME IN DSS_BULK_PARSING_DETL.FUNCTION_NAME%type,
+    p_FUNCTION_VALUE IN DSS_BULK_PARSING_DETL.FUNCTION_VALUE%type,
+    p_ACTIVE_YN IN DSS_BULK_PARSING_DETL.ACTIVE_YN%type,
+    p_CREATE_DATE IN DSS_BULK_PARSING_DETL.CREATE_DATE%type,
+    p_CREATE_BY IN DSS_BULK_PARSING_DETL.CREATE_BY%type,
+    p_MODIFY_DATE IN DSS_BULK_PARSING_DETL.MODIFY_DATE%type,
+    p_MODIFY_BY IN DSS_BULK_PARSING_DETL.MODIFY_BY%type,
+    p_ATTRIBUTE1 IN DSS_BULK_PARSING_DETL.ATTRIBUTE1%type,
+    p_ATTRIBUTE2 IN DSS_BULK_PARSING_DETL.ATTRIBUTE2%type,
+    p_ATTRIBUTE3 IN DSS_BULK_PARSING_DETL.ATTRIBUTE3%type,
+    p_ATTRIBUTE4 IN DSS_BULK_PARSING_DETL.ATTRIBUTE4%type,
+    p_ATTRIBUTE5 IN DSS_BULK_PARSING_DETL.ATTRIBUTE5%type); 
+PROCEDURE P_Insert (    p_LINE_SEQ IN DSS_BULK_PARSING_DETL.LINE_SEQ%type,
+    p_CONFIG_ID IN DSS_BULK_PARSING_DETL.CONFIG_ID%type,
+    p_CONFIG_SEQ IN DSS_BULK_PARSING_DETL.CONFIG_SEQ%type,
+    p_FUNCTION_ID IN DSS_BULK_PARSING_DETL.FUNCTION_ID%type,
+    p_FUNCTION_NAME IN DSS_BULK_PARSING_DETL.FUNCTION_NAME%type,
+    p_FUNCTION_VALUE IN DSS_BULK_PARSING_DETL.FUNCTION_VALUE%type,
+    p_ACTIVE_YN IN DSS_BULK_PARSING_DETL.ACTIVE_YN%type,
+    p_CREATE_DATE IN DSS_BULK_PARSING_DETL.CREATE_DATE%type,
+    p_CREATE_BY IN DSS_BULK_PARSING_DETL.CREATE_BY%type,
+    p_MODIFY_DATE IN DSS_BULK_PARSING_DETL.MODIFY_DATE%type,
+    p_MODIFY_BY IN DSS_BULK_PARSING_DETL.MODIFY_BY%type,
+    p_ATTRIBUTE1 IN DSS_BULK_PARSING_DETL.ATTRIBUTE1%type,
+    p_ATTRIBUTE2 IN DSS_BULK_PARSING_DETL.ATTRIBUTE2%type,
+    p_ATTRIBUTE3 IN DSS_BULK_PARSING_DETL.ATTRIBUTE3%type,
+    p_ATTRIBUTE4 IN DSS_BULK_PARSING_DETL.ATTRIBUTE4%type,
+    p_ATTRIBUTE5 IN DSS_BULK_PARSING_DETL.ATTRIBUTE5%type); 
+PROCEDURE P_Delete (    p_LINE_SEQ IN DSS_BULK_PARSING_DETL.LINE_SEQ%type); 
+
+END PKG_DSS_BULK_PARSING_DETL;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_DSS_BULK_PARSING_DETL;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_DSS_BULK_PARSING_DETL
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LINE_SEQ   IN     DSS_BULK_PARSING_DETL.LINE_SEQ%TYPE,
+      outCursor       OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT LINE_SEQ,
+                CONFIG_ID,
+                CONFIG_SEQ,
+                FUNCTION_ID,
+                FUNCTION_NAME,
+                FUNCTION_VALUE,
+                ACTIVE_YN,
+                CREATE_DATE,
+                CREATE_BY,
+                MODIFY_DATE,
+                MODIFY_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5
+           FROM DSS_BULK_PARSING_DETL
+          WHERE LINE_SEQ = p_LINE_SEQ;
+   END P_LoadByPrimaryKey;
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT LINE_SEQ,
+                CONFIG_ID,
+                CONFIG_SEQ,
+                FUNCTION_ID,
+                FUNCTION_NAME,
+                FUNCTION_VALUE,
+                ACTIVE_YN,
+                CREATE_DATE,
+                CREATE_BY,
+                MODIFY_DATE,
+                MODIFY_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5
+           FROM DSS_BULK_PARSING_DETL;
+   END P_LoadAll;
+
+
+   PROCEDURE P_Update (
+      p_LINE_SEQ         IN DSS_BULK_PARSING_DETL.LINE_SEQ%TYPE,
+      p_CONFIG_ID        IN DSS_BULK_PARSING_DETL.CONFIG_ID%TYPE,
+      p_CONFIG_SEQ       IN DSS_BULK_PARSING_DETL.CONFIG_SEQ%TYPE,
+      p_FUNCTION_ID      IN DSS_BULK_PARSING_DETL.FUNCTION_ID%TYPE,
+      p_FUNCTION_NAME    IN DSS_BULK_PARSING_DETL.FUNCTION_NAME%TYPE,
+      p_FUNCTION_VALUE   IN DSS_BULK_PARSING_DETL.FUNCTION_VALUE%TYPE,
+      p_ACTIVE_YN        IN DSS_BULK_PARSING_DETL.ACTIVE_YN%TYPE,
+      p_CREATE_DATE      IN DSS_BULK_PARSING_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY        IN DSS_BULK_PARSING_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE      IN DSS_BULK_PARSING_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY        IN DSS_BULK_PARSING_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1       IN DSS_BULK_PARSING_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2       IN DSS_BULK_PARSING_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3       IN DSS_BULK_PARSING_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4       IN DSS_BULK_PARSING_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5       IN DSS_BULK_PARSING_DETL.ATTRIBUTE5%TYPE)
+   IS
+   BEGIN
+      UPDATE DSS_BULK_PARSING_DETL
+         SET LINE_SEQ = p_LINE_SEQ,
+             CONFIG_ID = p_CONFIG_ID,
+             CONFIG_SEQ = p_CONFIG_SEQ,
+             FUNCTION_ID = p_FUNCTION_ID,
+             FUNCTION_NAME = p_FUNCTION_NAME,
+             FUNCTION_VALUE = p_FUNCTION_VALUE,
+             ACTIVE_YN = p_ACTIVE_YN,
+          --   CREATE_DATE = p_CREATE_DATE,
+          --   CREATE_BY = p_CREATE_BY,
+             MODIFY_DATE =sysdate, 
+             MODIFY_BY = p_MODIFY_BY,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5
+       WHERE LINE_SEQ = p_LINE_SEQ;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_LINE_SEQ         IN DSS_BULK_PARSING_DETL.LINE_SEQ%TYPE,
+      p_CONFIG_ID        IN DSS_BULK_PARSING_DETL.CONFIG_ID%TYPE,
+      p_CONFIG_SEQ       IN DSS_BULK_PARSING_DETL.CONFIG_SEQ%TYPE,
+      p_FUNCTION_ID      IN DSS_BULK_PARSING_DETL.FUNCTION_ID%TYPE,
+      p_FUNCTION_NAME    IN DSS_BULK_PARSING_DETL.FUNCTION_NAME%TYPE,
+      p_FUNCTION_VALUE   IN DSS_BULK_PARSING_DETL.FUNCTION_VALUE%TYPE,
+      p_ACTIVE_YN        IN DSS_BULK_PARSING_DETL.ACTIVE_YN%TYPE,
+      p_CREATE_DATE      IN DSS_BULK_PARSING_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY        IN DSS_BULK_PARSING_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE      IN DSS_BULK_PARSING_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY        IN DSS_BULK_PARSING_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1       IN DSS_BULK_PARSING_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2       IN DSS_BULK_PARSING_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3       IN DSS_BULK_PARSING_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4       IN DSS_BULK_PARSING_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5       IN DSS_BULK_PARSING_DETL.ATTRIBUTE5%TYPE)
+   IS
+      v_seq   NUMBER;
+   BEGIN
+      SELECT NVL (MAX (line_seq), 0) + 1
+        INTO v_seq
+        FROM DSS_BULK_PARSING_DETL;
+
+      INSERT INTO DSS_BULK_PARSING_DETL (LINE_SEQ,
+                                         CONFIG_ID,
+                                         CONFIG_SEQ,
+                                         FUNCTION_ID,
+                                         FUNCTION_NAME,
+                                         FUNCTION_VALUE,
+                                         ACTIVE_YN,
+                                         CREATE_DATE,
+                                         CREATE_BY,
+                                         MODIFY_DATE,
+                                         MODIFY_BY,
+                                         ATTRIBUTE1,
+                                         ATTRIBUTE2,
+                                         ATTRIBUTE3,
+                                         ATTRIBUTE4,
+                                         ATTRIBUTE5)
+           VALUES (v_seq,                                       -- p_LINE_SEQ,
+                   p_CONFIG_ID,
+                   p_CONFIG_SEQ,
+                   p_FUNCTION_ID,
+                   p_FUNCTION_NAME,
+                   p_FUNCTION_VALUE,
+                   p_ACTIVE_YN,
+                   SYSDATE,                                 --  p_CREATE_DATE,
+                   p_CREATE_BY,
+                   p_MODIFY_DATE,
+                   p_MODIFY_BY,
+                   p_ATTRIBUTE1,
+                   p_ATTRIBUTE2,
+                   p_ATTRIBUTE3,
+                   p_ATTRIBUTE4,
+                   p_ATTRIBUTE5);
+   END P_Insert;
+
+   PROCEDURE P_Delete (p_LINE_SEQ IN DSS_BULK_PARSING_DETL.LINE_SEQ%TYPE)
+   IS
+   BEGIN
+      DELETE FROM DSS_BULK_PARSING_DETL
+            WHERE LINE_SEQ = p_LINE_SEQ;
+   END P_Delete;
+END PKG_DSS_BULK_PARSING_DETL;
+/

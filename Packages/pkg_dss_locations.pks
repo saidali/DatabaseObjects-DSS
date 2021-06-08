@@ -1,0 +1,277 @@
+DROP PACKAGE DSS.PKG_DSS_LOCATIONS;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_DSS_LOCATIONS
+AS
+   PROCEDURE P_LoadByPrimaryKey2 (
+      p_LOCATION_CODE     IN     DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_OPERATING_UNIT    IN     DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LOCATION_CODE     IN     DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE Get_EPB_Loc_Locations (
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_Update (
+      p_OPERATING_UNIT    IN DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_STATUS            IN DSS_LOCATIONS.STATUS%TYPE,
+      p_CREATE_DATE       IN DSS_LOCATIONS.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_LOCATIONS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_LOCATIONS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_LOCATIONS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_LOCATIONS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_LOCATIONS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_LOCATIONS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_LOCATIONS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_LOCATIONS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_LOCATIONS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_LOCATIONS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_LOCATIONS.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Insert (
+      p_OPERATING_UNIT    IN DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_STATUS            IN DSS_LOCATIONS.STATUS%TYPE,
+      p_CREATE_DATE       IN DSS_LOCATIONS.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_LOCATIONS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_LOCATIONS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_LOCATIONS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_LOCATIONS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_LOCATIONS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_LOCATIONS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_LOCATIONS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_LOCATIONS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_LOCATIONS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_LOCATIONS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_LOCATIONS.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Delete (
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE);
+END PKG_DSS_LOCATIONS;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_DSS_LOCATIONS;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_DSS_LOCATIONS
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LOCATION_CODE     IN     DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT OPERATING_UNIT,
+                ORGANIZATION_ID,
+                LOCATION_CODE,
+                STATUS,
+                CREATE_DATE,
+                CREATE_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_LOCATIONS
+          WHERE     LOCATION_CODE = p_LOCATION_CODE
+                AND ORGANIZATION_ID = p_ORGANIZATION_ID;
+   END P_LoadByPrimaryKey;
+
+
+   PROCEDURE P_LoadByPrimaryKey2 (
+      p_LOCATION_CODE     IN     DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_OPERATING_UNIT    IN     DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT OPERATING_UNIT,
+                ORGANIZATION_ID,
+                LOCATION_CODE,
+                DESCRIPTION,
+                LOCATION_TYPE,
+                CITY,
+                REGION,
+                OUTLET_TYPE,
+                OPTIMIZA_ENDABLED,
+                CREATION_DATE,
+                LAST_UPDATE_DATE,
+                DISABLE_DATE,
+                ACTIVE,
+                SUSPENDED,
+                STATUS,
+                CREATE_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM v_DSS_LOCATIONS
+          WHERE     LOCATION_CODE = p_LOCATION_CODE
+                AND ORGANIZATION_ID = p_ORGANIZATION_ID;
+   END P_LoadByPrimaryKey2;
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT OPERATING_UNIT,
+                ORGANIZATION_ID,
+                LOCATION_CODE,
+                STATUS,
+                CREATE_DATE,
+                CREATE_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_LOCATIONS;
+   END P_LoadAll;
+
+   PROCEDURE Get_EPB_Loc_Locations (
+      p_ORGANIZATION_ID   IN     DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      outCursor              OUT DSS.MYGEN.sqlcur)
+   AS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT *
+           FROM V_DSS_LOCATIONS
+          WHERE LOCATION_CODE IN (SELECT DISTINCT SUBINVENTORY_CODE
+                                    FROM V_SYN_OER_LOCATION_CONFIG
+                                   WHERE ORGANIZATION_ID = p_ORGANIZATION_ID);
+   END Get_EPB_Loc_Locations;
+
+   PROCEDURE P_Update (
+      p_OPERATING_UNIT    IN DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_STATUS            IN DSS_LOCATIONS.STATUS%TYPE,
+      p_CREATE_DATE       IN DSS_LOCATIONS.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_LOCATIONS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_LOCATIONS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_LOCATIONS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_LOCATIONS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_LOCATIONS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_LOCATIONS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_LOCATIONS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_LOCATIONS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_LOCATIONS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_LOCATIONS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_LOCATIONS.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      UPDATE DSS_LOCATIONS
+         SET OPERATING_UNIT = p_OPERATING_UNIT,
+             ORGANIZATION_ID = p_ORGANIZATION_ID,
+             LOCATION_CODE = p_LOCATION_CODE,
+             STATUS = p_STATUS,
+             CREATE_DATE = p_CREATE_DATE,
+             CREATE_BY = p_CREATE_BY,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5,
+             ATTRIBUTE6 = p_ATTRIBUTE6,
+             ATTRIBUTE7 = p_ATTRIBUTE7,
+             ATTRIBUTE8 = p_ATTRIBUTE8,
+             ATTRIBUTE9 = p_ATTRIBUTE9,
+             ATTRIBUTE10 = p_ATTRIBUTE10
+       WHERE     LOCATION_CODE = p_LOCATION_CODE
+             AND ORGANIZATION_ID = p_ORGANIZATION_ID;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_OPERATING_UNIT    IN DSS_LOCATIONS.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE,
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_STATUS            IN DSS_LOCATIONS.STATUS%TYPE,
+      p_CREATE_DATE       IN DSS_LOCATIONS.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_LOCATIONS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_LOCATIONS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_LOCATIONS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_LOCATIONS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_LOCATIONS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_LOCATIONS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_LOCATIONS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_LOCATIONS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_LOCATIONS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_LOCATIONS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_LOCATIONS.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      INSERT INTO DSS_LOCATIONS (OPERATING_UNIT,
+                                 ORGANIZATION_ID,
+                                 LOCATION_CODE,
+                                 STATUS,
+                                 CREATE_DATE,
+                                 CREATE_BY,
+                                 ATTRIBUTE1,
+                                 ATTRIBUTE2,
+                                 ATTRIBUTE3,
+                                 ATTRIBUTE4,
+                                 ATTRIBUTE5,
+                                 ATTRIBUTE6,
+                                 ATTRIBUTE7,
+                                 ATTRIBUTE8,
+                                 ATTRIBUTE9,
+                                 ATTRIBUTE10)
+           VALUES (p_OPERATING_UNIT,
+                   p_ORGANIZATION_ID,
+                   p_LOCATION_CODE,
+                   p_STATUS,
+                   p_CREATE_DATE,
+                   p_CREATE_BY,
+                   p_ATTRIBUTE1,
+                   p_ATTRIBUTE2,
+                   p_ATTRIBUTE3,
+                   p_ATTRIBUTE4,
+                   p_ATTRIBUTE5,
+                   p_ATTRIBUTE6,
+                   p_ATTRIBUTE7,
+                   p_ATTRIBUTE8,
+                   p_ATTRIBUTE9,
+                   p_ATTRIBUTE10);
+   END P_Insert;
+
+   PROCEDURE P_Delete (
+      p_LOCATION_CODE     IN DSS_LOCATIONS.LOCATION_CODE%TYPE,
+      p_ORGANIZATION_ID   IN DSS_LOCATIONS.ORGANIZATION_ID%TYPE)
+   IS
+   BEGIN
+      DELETE FROM DSS_LOCATIONS
+            WHERE     LOCATION_CODE = p_LOCATION_CODE
+                  AND ORGANIZATION_ID = p_ORGANIZATION_ID;
+   END P_Delete;
+END PKG_DSS_LOCATIONS;
+/

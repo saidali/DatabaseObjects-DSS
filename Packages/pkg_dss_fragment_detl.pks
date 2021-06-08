@@ -1,0 +1,355 @@
+DROP PACKAGE DSS.PKG_DSS_FRAGMENT_DETL;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_DSS_FRAGMENT_DETL
+AS
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_LoadByPrimaryKey (
+      p_DETL_ID   IN     DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_Update (
+      p_DETL_ID           IN DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      p_HEADERSEQ         IN DSS_FRAGMENT_DETL.HEADERSEQ%TYPE,
+      p_LINE_ID           IN DSS_FRAGMENT_DETL.LINE_ID%TYPE,
+      p_ITEM_INDEX        IN DSS_FRAGMENT_DETL.ITEM_INDEX%TYPE,
+      p_OPERATING_UNIT    IN DSS_FRAGMENT_DETL.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_FRAGMENT_DETL.ORGANIZATION_ID%TYPE,
+      p_ITEM_TYPE         IN DSS_FRAGMENT_DETL.ITEM_TYPE%TYPE,
+      p_PRODUCT_CODE      IN DSS_FRAGMENT_DETL.PRODUCT_CODE%TYPE,
+      p_ITEM_LENGTH       IN DSS_FRAGMENT_DETL.ITEM_LENGTH%TYPE,
+      p_ITEM_WIDTH        IN DSS_FRAGMENT_DETL.ITEM_WIDTH%TYPE,
+      p_ITEM_HEIGHT       IN DSS_FRAGMENT_DETL.ITEM_HEIGHT%TYPE,
+      p_ITEM_UOM          IN DSS_FRAGMENT_DETL.ITEM_UOM%TYPE,
+      p_QUANTITY          IN DSS_FRAGMENT_DETL.QUANTITY%TYPE,
+      p_ISWASTED          IN DSS_FRAGMENT_DETL.ISWASTED%TYPE,
+      p_ISDAMAGED         IN DSS_FRAGMENT_DETL.ISDAMAGED%TYPE,
+      p_ITEM_PRICE        IN DSS_FRAGMENT_DETL.ITEM_PRICE%TYPE,
+      p_STATUS            IN DSS_FRAGMENT_DETL.STATUS%TYPE,
+      p_REFERENCE_1       IN DSS_FRAGMENT_DETL.REFERENCE_1%TYPE,
+      p_REFERENCE_2       IN DSS_FRAGMENT_DETL.REFERENCE_2%TYPE,
+      p_CREATE_DATE       IN DSS_FRAGMENT_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_FRAGMENT_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE       IN DSS_FRAGMENT_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY         IN DSS_FRAGMENT_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_FRAGMENT_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_FRAGMENT_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_FRAGMENT_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_FRAGMENT_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_FRAGMENT_DETL.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_FRAGMENT_DETL.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_FRAGMENT_DETL.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_FRAGMENT_DETL.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_FRAGMENT_DETL.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_FRAGMENT_DETL.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Insert (
+      p_DETL_ID           IN OUT DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      p_HEADERSEQ         IN DSS_FRAGMENT_DETL.HEADERSEQ%TYPE,
+      p_LINE_ID           IN DSS_FRAGMENT_DETL.LINE_ID%TYPE,
+      p_ITEM_INDEX        IN DSS_FRAGMENT_DETL.ITEM_INDEX%TYPE,
+      p_OPERATING_UNIT    IN DSS_FRAGMENT_DETL.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_FRAGMENT_DETL.ORGANIZATION_ID%TYPE,
+      p_ITEM_TYPE         IN DSS_FRAGMENT_DETL.ITEM_TYPE%TYPE,
+      p_PRODUCT_CODE      IN DSS_FRAGMENT_DETL.PRODUCT_CODE%TYPE,
+      p_ITEM_LENGTH       IN DSS_FRAGMENT_DETL.ITEM_LENGTH%TYPE,
+      p_ITEM_WIDTH        IN DSS_FRAGMENT_DETL.ITEM_WIDTH%TYPE,
+      p_ITEM_HEIGHT       IN DSS_FRAGMENT_DETL.ITEM_HEIGHT%TYPE,
+      p_ITEM_UOM          IN DSS_FRAGMENT_DETL.ITEM_UOM%TYPE,
+      p_QUANTITY          IN DSS_FRAGMENT_DETL.QUANTITY%TYPE,
+      p_ISWASTED          IN DSS_FRAGMENT_DETL.ISWASTED%TYPE,
+      p_ISDAMAGED         IN DSS_FRAGMENT_DETL.ISDAMAGED%TYPE,
+      p_ITEM_PRICE        IN DSS_FRAGMENT_DETL.ITEM_PRICE%TYPE,
+      p_STATUS            IN DSS_FRAGMENT_DETL.STATUS%TYPE,
+      p_REFERENCE_1       IN DSS_FRAGMENT_DETL.REFERENCE_1%TYPE,
+      p_REFERENCE_2       IN DSS_FRAGMENT_DETL.REFERENCE_2%TYPE,
+      p_CREATE_DATE       IN DSS_FRAGMENT_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_FRAGMENT_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE       IN DSS_FRAGMENT_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY         IN DSS_FRAGMENT_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_FRAGMENT_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_FRAGMENT_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_FRAGMENT_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_FRAGMENT_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_FRAGMENT_DETL.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_FRAGMENT_DETL.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_FRAGMENT_DETL.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_FRAGMENT_DETL.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_FRAGMENT_DETL.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_FRAGMENT_DETL.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Delete (p_DETL_ID IN DSS_FRAGMENT_DETL.DETL_ID%TYPE);
+END PKG_DSS_FRAGMENT_DETL;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_DSS_FRAGMENT_DETL;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_DSS_FRAGMENT_DETL
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_DETL_ID   IN     DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT DETL_ID,
+                HEADERSEQ,
+                LINE_ID,
+                ITEM_INDEX,
+                OPERATING_UNIT,
+                ORGANIZATION_ID,
+                ITEM_TYPE,
+                PRODUCT_CODE,
+                ITEM_LENGTH,
+                ITEM_WIDTH,
+                ITEM_HEIGHT,
+                ITEM_UOM,
+                QUANTITY,
+                ISWASTED,
+                ISDAMAGED,
+                ITEM_PRICE,
+                STATUS,
+                REFERENCE_1,
+                REFERENCE_2,
+                CREATE_DATE,
+                CREATE_BY,
+                MODIFY_DATE,
+                MODIFY_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_FRAGMENT_DETL
+          WHERE DETL_ID = p_DETL_ID;
+   END P_LoadByPrimaryKey;
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT DETL_ID,
+                HEADERSEQ,
+                LINE_ID,
+                ITEM_INDEX,
+                OPERATING_UNIT,
+                ORGANIZATION_ID,
+                ITEM_TYPE,
+                PRODUCT_CODE,
+                ITEM_LENGTH,
+                ITEM_WIDTH,
+                ITEM_HEIGHT,
+                ITEM_UOM,
+                QUANTITY,
+                ISWASTED,
+                ISDAMAGED,
+                ITEM_PRICE,
+                STATUS,
+                REFERENCE_1,
+                REFERENCE_2,
+                CREATE_DATE,
+                CREATE_BY,
+                MODIFY_DATE,
+                MODIFY_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM DSS_FRAGMENT_DETL;
+   END P_LoadAll;
+
+
+   PROCEDURE P_Update (
+      p_DETL_ID           IN DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      p_HEADERSEQ         IN DSS_FRAGMENT_DETL.HEADERSEQ%TYPE,
+      p_LINE_ID           IN DSS_FRAGMENT_DETL.LINE_ID%TYPE,
+      p_ITEM_INDEX        IN DSS_FRAGMENT_DETL.ITEM_INDEX%TYPE,
+      p_OPERATING_UNIT    IN DSS_FRAGMENT_DETL.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN DSS_FRAGMENT_DETL.ORGANIZATION_ID%TYPE,
+      p_ITEM_TYPE         IN DSS_FRAGMENT_DETL.ITEM_TYPE%TYPE,
+      p_PRODUCT_CODE      IN DSS_FRAGMENT_DETL.PRODUCT_CODE%TYPE,
+      p_ITEM_LENGTH       IN DSS_FRAGMENT_DETL.ITEM_LENGTH%TYPE,
+      p_ITEM_WIDTH        IN DSS_FRAGMENT_DETL.ITEM_WIDTH%TYPE,
+      p_ITEM_HEIGHT       IN DSS_FRAGMENT_DETL.ITEM_HEIGHT%TYPE,
+      p_ITEM_UOM          IN DSS_FRAGMENT_DETL.ITEM_UOM%TYPE,
+      p_QUANTITY          IN DSS_FRAGMENT_DETL.QUANTITY%TYPE,
+      p_ISWASTED          IN DSS_FRAGMENT_DETL.ISWASTED%TYPE,
+      p_ISDAMAGED         IN DSS_FRAGMENT_DETL.ISDAMAGED%TYPE,
+      p_ITEM_PRICE        IN DSS_FRAGMENT_DETL.ITEM_PRICE%TYPE,
+      p_STATUS            IN DSS_FRAGMENT_DETL.STATUS%TYPE,
+      p_REFERENCE_1       IN DSS_FRAGMENT_DETL.REFERENCE_1%TYPE,
+      p_REFERENCE_2       IN DSS_FRAGMENT_DETL.REFERENCE_2%TYPE,
+      p_CREATE_DATE       IN DSS_FRAGMENT_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN DSS_FRAGMENT_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE       IN DSS_FRAGMENT_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY         IN DSS_FRAGMENT_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1        IN DSS_FRAGMENT_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN DSS_FRAGMENT_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN DSS_FRAGMENT_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN DSS_FRAGMENT_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN DSS_FRAGMENT_DETL.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN DSS_FRAGMENT_DETL.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN DSS_FRAGMENT_DETL.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN DSS_FRAGMENT_DETL.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN DSS_FRAGMENT_DETL.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN DSS_FRAGMENT_DETL.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      UPDATE DSS_FRAGMENT_DETL
+         SET DETL_ID = p_DETL_ID,
+             HEADERSEQ = p_HEADERSEQ,
+             LINE_ID = p_LINE_ID,
+             ITEM_INDEX = p_ITEM_INDEX,
+             OPERATING_UNIT = p_OPERATING_UNIT,
+             ORGANIZATION_ID = p_ORGANIZATION_ID,
+             ITEM_TYPE = p_ITEM_TYPE,
+             PRODUCT_CODE = p_PRODUCT_CODE,
+             ITEM_LENGTH = p_ITEM_LENGTH,
+             ITEM_WIDTH = p_ITEM_WIDTH,
+             ITEM_HEIGHT = p_ITEM_HEIGHT,
+             ITEM_UOM = p_ITEM_UOM,
+             QUANTITY = p_QUANTITY,
+             ISWASTED = p_ISWASTED,
+             ISDAMAGED = p_ISDAMAGED,
+             ITEM_PRICE = p_ITEM_PRICE,
+             STATUS = p_STATUS,
+             REFERENCE_1 = p_REFERENCE_1,
+             REFERENCE_2 = p_REFERENCE_2,
+             MODIFY_DATE = SYSDATE,
+             MODIFY_BY = p_MODIFY_BY,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5,
+             ATTRIBUTE6 = p_ATTRIBUTE6,
+             ATTRIBUTE7 = p_ATTRIBUTE7,
+             ATTRIBUTE8 = p_ATTRIBUTE8,
+             ATTRIBUTE9 = p_ATTRIBUTE9,
+             ATTRIBUTE10 = p_ATTRIBUTE10
+       WHERE DETL_ID = p_DETL_ID;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_DETL_ID           IN OUT DSS_FRAGMENT_DETL.DETL_ID%TYPE,
+      p_HEADERSEQ         IN     DSS_FRAGMENT_DETL.HEADERSEQ%TYPE,
+      p_LINE_ID           IN     DSS_FRAGMENT_DETL.LINE_ID%TYPE,
+      p_ITEM_INDEX        IN     DSS_FRAGMENT_DETL.ITEM_INDEX%TYPE,
+      p_OPERATING_UNIT    IN     DSS_FRAGMENT_DETL.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN     DSS_FRAGMENT_DETL.ORGANIZATION_ID%TYPE,
+      p_ITEM_TYPE         IN     DSS_FRAGMENT_DETL.ITEM_TYPE%TYPE,
+      p_PRODUCT_CODE      IN     DSS_FRAGMENT_DETL.PRODUCT_CODE%TYPE,
+      p_ITEM_LENGTH       IN     DSS_FRAGMENT_DETL.ITEM_LENGTH%TYPE,
+      p_ITEM_WIDTH        IN     DSS_FRAGMENT_DETL.ITEM_WIDTH%TYPE,
+      p_ITEM_HEIGHT       IN     DSS_FRAGMENT_DETL.ITEM_HEIGHT%TYPE,
+      p_ITEM_UOM          IN     DSS_FRAGMENT_DETL.ITEM_UOM%TYPE,
+      p_QUANTITY          IN     DSS_FRAGMENT_DETL.QUANTITY%TYPE,
+      p_ISWASTED          IN     DSS_FRAGMENT_DETL.ISWASTED%TYPE,
+      p_ISDAMAGED         IN     DSS_FRAGMENT_DETL.ISDAMAGED%TYPE,
+      p_ITEM_PRICE        IN     DSS_FRAGMENT_DETL.ITEM_PRICE%TYPE,
+      p_STATUS            IN     DSS_FRAGMENT_DETL.STATUS%TYPE,
+      p_REFERENCE_1       IN     DSS_FRAGMENT_DETL.REFERENCE_1%TYPE,
+      p_REFERENCE_2       IN     DSS_FRAGMENT_DETL.REFERENCE_2%TYPE,
+      p_CREATE_DATE       IN     DSS_FRAGMENT_DETL.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN     DSS_FRAGMENT_DETL.CREATE_BY%TYPE,
+      p_MODIFY_DATE       IN     DSS_FRAGMENT_DETL.MODIFY_DATE%TYPE,
+      p_MODIFY_BY         IN     DSS_FRAGMENT_DETL.MODIFY_BY%TYPE,
+      p_ATTRIBUTE1        IN     DSS_FRAGMENT_DETL.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN     DSS_FRAGMENT_DETL.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN     DSS_FRAGMENT_DETL.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN     DSS_FRAGMENT_DETL.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN     DSS_FRAGMENT_DETL.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN     DSS_FRAGMENT_DETL.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN     DSS_FRAGMENT_DETL.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN     DSS_FRAGMENT_DETL.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN     DSS_FRAGMENT_DETL.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN     DSS_FRAGMENT_DETL.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      p_DETL_ID := SEQ_DSS_FRAGMENT_DETL.NEXTVAL;
+
+      INSERT INTO DSS_FRAGMENT_DETL (DETL_ID,
+                                     HEADERSEQ,
+                                     LINE_ID,
+                                     ITEM_INDEX,
+                                     OPERATING_UNIT,
+                                     ORGANIZATION_ID,
+                                     ITEM_TYPE,
+                                     PRODUCT_CODE,
+                                     ITEM_LENGTH,
+                                     ITEM_WIDTH,
+                                     ITEM_HEIGHT,
+                                     ITEM_UOM,
+                                     QUANTITY,
+                                     ISWASTED,
+                                     ISDAMAGED,
+                                     ITEM_PRICE,
+                                     STATUS,
+                                     REFERENCE_1,
+                                     REFERENCE_2,
+                                     CREATE_DATE,
+                                     CREATE_BY,
+                                     ATTRIBUTE1,
+                                     ATTRIBUTE2,
+                                     ATTRIBUTE3,
+                                     ATTRIBUTE4,
+                                     ATTRIBUTE5,
+                                     ATTRIBUTE6,
+                                     ATTRIBUTE7,
+                                     ATTRIBUTE8,
+                                     ATTRIBUTE9,
+                                     ATTRIBUTE10)
+           VALUES (p_DETL_ID,
+                   p_HEADERSEQ,
+                   p_LINE_ID,
+                   p_ITEM_INDEX,
+                   p_OPERATING_UNIT,
+                   p_ORGANIZATION_ID,
+                   p_ITEM_TYPE,
+                   p_PRODUCT_CODE,
+                   p_ITEM_LENGTH,
+                   p_ITEM_WIDTH,
+                   p_ITEM_HEIGHT,
+                   p_ITEM_UOM,
+                   p_QUANTITY,
+                   p_ISWASTED,
+                   p_ISDAMAGED,
+                   p_ITEM_PRICE,
+                   p_STATUS,
+                   p_REFERENCE_1,
+                   p_REFERENCE_2,
+                   SYSDATE,
+                   p_CREATE_BY,
+                   p_ATTRIBUTE1,
+                   p_ATTRIBUTE2,
+                   p_ATTRIBUTE3,
+                   p_ATTRIBUTE4,
+                   p_ATTRIBUTE5,
+                   p_ATTRIBUTE6,
+                   p_ATTRIBUTE7,
+                   p_ATTRIBUTE8,
+                   p_ATTRIBUTE9,
+                   p_ATTRIBUTE10);
+   END P_Insert;
+
+   PROCEDURE P_Delete (p_DETL_ID IN DSS_FRAGMENT_DETL.DETL_ID%TYPE)
+   IS
+   BEGIN
+      DELETE FROM DSS_FRAGMENT_DETL
+            WHERE DETL_ID = p_DETL_ID;
+   END P_Delete;
+END PKG_DSS_FRAGMENT_DETL;
+/

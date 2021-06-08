@@ -1,0 +1,401 @@
+DROP PACKAGE DSS.PKG_TK_ORGANIZATION_WARRANTY;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_TK_ORGANIZATION_WARRANTY
+AS
+   PROCEDURE P_LoadBy4Levels (
+      p_ORGANIZATION_ID     IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE          IN     VARCHAR2,
+      P_CATEGORY_CODE       IN     VARCHAR2,
+      P_SUB_CATEGORY_CODE   IN     VARCHAR2,
+      outCursor                OUT DSS.MYGEN.sqlcur) ;
+   PROCEDURE P_LoadBy3Levels (
+      p_ORGANIZATION_ID     IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE          IN     VARCHAR2,
+      P_CATEGORY_CODE       IN     VARCHAR2,
+      outCursor                OUT DSS.MYGEN.sqlcur) ;
+   PROCEDURE P_LoadBy2Levels (
+      p_ORGANIZATION_ID     IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE          IN     VARCHAR2,
+      outCursor                OUT DSS.MYGEN.sqlcur) ;            
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LINEID    IN     TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur);
+
+   PROCEDURE P_Update (
+      p_LINEID            IN TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      p_OPERATING_UNIT    IN TK_ORGANIZATION_WARRANTY.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      p_CATEGORY_ID       IN TK_ORGANIZATION_WARRANTY.CATEGORY_ID%TYPE,
+      p_WARRANTY_SEQ      IN TK_ORGANIZATION_WARRANTY.WARRANTY_SEQ%TYPE,
+      p_CREATE_DATE       IN TK_ORGANIZATION_WARRANTY.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN TK_ORGANIZATION_WARRANTY.CREATE_BY%TYPE,
+      p_ACTIVE            IN TK_ORGANIZATION_WARRANTY.ACTIVE%TYPE,
+      p_ATTRIBUTE1        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE10%TYPE,
+      p_ATTRIBUTE11       IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE11%TYPE);
+
+   PROCEDURE P_Insert (
+      p_LINEID            IN OUT TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      p_OPERATING_UNIT    IN     TK_ORGANIZATION_WARRANTY.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      p_CATEGORY_ID       IN     TK_ORGANIZATION_WARRANTY.CATEGORY_ID%TYPE,
+      p_WARRANTY_SEQ      IN     TK_ORGANIZATION_WARRANTY.WARRANTY_SEQ%TYPE,
+      p_CREATE_DATE       IN     TK_ORGANIZATION_WARRANTY.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN     TK_ORGANIZATION_WARRANTY.CREATE_BY%TYPE,
+      p_ACTIVE            IN     TK_ORGANIZATION_WARRANTY.ACTIVE%TYPE,
+      p_ATTRIBUTE1        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE10%TYPE,
+      p_ATTRIBUTE11       IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE11%TYPE);
+
+   PROCEDURE P_Delete (p_LINEID IN TK_ORGANIZATION_WARRANTY.LINEID%TYPE);
+END PKG_TK_ORGANIZATION_WARRANTY;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_TK_ORGANIZATION_WARRANTY;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_TK_ORGANIZATION_WARRANTY
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_LINEID    IN     TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      outCursor      OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT LINEID,
+                OPERATING_UNIT,
+                ORGANIZATION_ID,
+                CATEGORY_ID,
+                WARRANTY_SEQ,
+                CREATE_DATE,
+                CREATE_BY,
+                ACTIVE,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10,
+                ATTRIBUTE11
+           FROM TK_ORGANIZATION_WARRANTY
+          WHERE LINEID = p_LINEID;
+   END P_LoadByPrimaryKey;
+
+   PROCEDURE P_LoadAll (outCursor OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT LINEID,
+                OPERATING_UNIT,
+                ORGANIZATION_ID,
+                CATEGORY_ID,
+                WARRANTY_SEQ,
+                CREATE_DATE,
+                CREATE_BY,
+                ACTIVE,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10,
+                ATTRIBUTE11
+           FROM TK_ORGANIZATION_WARRANTY;
+   END P_LoadAll;
+
+
+   PROCEDURE P_Update (
+      p_LINEID            IN TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      p_OPERATING_UNIT    IN TK_ORGANIZATION_WARRANTY.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      p_CATEGORY_ID       IN TK_ORGANIZATION_WARRANTY.CATEGORY_ID%TYPE,
+      p_WARRANTY_SEQ      IN TK_ORGANIZATION_WARRANTY.WARRANTY_SEQ%TYPE,
+      p_CREATE_DATE       IN TK_ORGANIZATION_WARRANTY.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN TK_ORGANIZATION_WARRANTY.CREATE_BY%TYPE,
+      p_ACTIVE            IN TK_ORGANIZATION_WARRANTY.ACTIVE%TYPE,
+      p_ATTRIBUTE1        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE10%TYPE,
+      p_ATTRIBUTE11       IN TK_ORGANIZATION_WARRANTY.ATTRIBUTE11%TYPE)
+   IS
+   BEGIN
+      UPDATE TK_ORGANIZATION_WARRANTY
+         SET LINEID = p_LINEID,
+             OPERATING_UNIT = p_OPERATING_UNIT,
+             ORGANIZATION_ID = p_ORGANIZATION_ID,
+             CATEGORY_ID = p_CATEGORY_ID,
+             WARRANTY_SEQ = p_WARRANTY_SEQ,
+             CREATE_DATE = p_CREATE_DATE,
+             CREATE_BY = p_CREATE_BY,
+             ACTIVE = p_ACTIVE,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5,
+             ATTRIBUTE6 = p_ATTRIBUTE6,
+             ATTRIBUTE7 = p_ATTRIBUTE7,
+             ATTRIBUTE8 = p_ATTRIBUTE8,
+             ATTRIBUTE9 = p_ATTRIBUTE9,
+             ATTRIBUTE10 = p_ATTRIBUTE10,
+             ATTRIBUTE11 = p_ATTRIBUTE11
+       WHERE LINEID = p_LINEID;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_LINEID            IN OUT TK_ORGANIZATION_WARRANTY.LINEID%TYPE,
+      p_OPERATING_UNIT    IN     TK_ORGANIZATION_WARRANTY.OPERATING_UNIT%TYPE,
+      p_ORGANIZATION_ID   IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      p_CATEGORY_ID       IN     TK_ORGANIZATION_WARRANTY.CATEGORY_ID%TYPE,
+      p_WARRANTY_SEQ      IN     TK_ORGANIZATION_WARRANTY.WARRANTY_SEQ%TYPE,
+      p_CREATE_DATE       IN     TK_ORGANIZATION_WARRANTY.CREATE_DATE%TYPE,
+      p_CREATE_BY         IN     TK_ORGANIZATION_WARRANTY.CREATE_BY%TYPE,
+      p_ACTIVE            IN     TK_ORGANIZATION_WARRANTY.ACTIVE%TYPE,
+      p_ATTRIBUTE1        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9        IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10       IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE10%TYPE,
+      p_ATTRIBUTE11       IN     TK_ORGANIZATION_WARRANTY.ATTRIBUTE11%TYPE)
+   IS
+   BEGIN
+      p_LINEID := SEQ_ORGANIZATION_WARRANTY.NEXTVAL;
+
+      INSERT INTO TK_ORGANIZATION_WARRANTY (LINEID,
+                                            OPERATING_UNIT,
+                                            ORGANIZATION_ID,
+                                            CATEGORY_ID,
+                                            WARRANTY_SEQ,
+                                            CREATE_DATE,
+                                            CREATE_BY,
+                                            ACTIVE,
+                                            ATTRIBUTE1,
+                                            ATTRIBUTE2,
+                                            ATTRIBUTE3,
+                                            ATTRIBUTE4,
+                                            ATTRIBUTE5,
+                                            ATTRIBUTE6,
+                                            ATTRIBUTE7,
+                                            ATTRIBUTE8,
+                                            ATTRIBUTE9,
+                                            ATTRIBUTE10,
+                                            ATTRIBUTE11)
+           VALUES (p_LINEID,
+                   p_OPERATING_UNIT,
+                   p_ORGANIZATION_ID,
+                   p_CATEGORY_ID,
+                   p_WARRANTY_SEQ,
+                   sysdate,
+                   p_CREATE_BY,
+                   p_ACTIVE,
+                   p_ATTRIBUTE1,
+                   p_ATTRIBUTE2,
+                   p_ATTRIBUTE3,
+                   p_ATTRIBUTE4,
+                   p_ATTRIBUTE5,
+                   p_ATTRIBUTE6,
+                   p_ATTRIBUTE7,
+                   p_ATTRIBUTE8,
+                   p_ATTRIBUTE9,
+                   p_ATTRIBUTE10,
+                   p_ATTRIBUTE11);
+   END P_Insert;
+
+   PROCEDURE P_Delete (p_LINEID IN TK_ORGANIZATION_WARRANTY.LINEID%TYPE)
+   IS
+   BEGIN
+      DELETE FROM TK_ORGANIZATION_WARRANTY
+            WHERE LINEID = p_LINEID;
+   END P_Delete;
+
+
+   PROCEDURE P_LoadBy4Levels (
+      p_ORGANIZATION_ID     IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE          IN     VARCHAR2,
+      P_CATEGORY_CODE       IN     VARCHAR2,
+      P_SUB_CATEGORY_CODE   IN     VARCHAR2,
+      outCursor                OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT TB.LINEID,
+                ORG.OPERATING_UNIT,
+                VW.ORGANIZATION_ID,
+                VW.CATEGORY_ID,
+                VW.BRAND_CODE,
+                VW.BRNAD_NAME,
+                VW.BRAND_SEQ,
+                VW.SERVICE_BRANDCODE,
+                VW.CATEGORY_CODE,
+                VW.CATEGORY_DESCRIPTION,
+                VW.SUB_CATEGORY_CODE,
+                VW.SUBCATEGORY_DESCRIPTION,
+                VW.SUB_SUB_CATEGORY_CODE,
+                VW.SUBSUBCATEGORY_DESCRIPTION,
+                VW.PURCHASETYPE,
+                VW.ENABLED,
+                VW.BRAND_MAPPED,
+                WT.WARRANTY_SEQ,
+                WT.WARRANTY_CODE,
+                WT.WARRANTY_DESC,
+                WT.WARRANTY_ACTIVE,
+                WT.NO_YEARS,
+                WT.NO_MONTHS,
+                WT.NO_DAYS,
+                TB.CREATE_DATE,
+                TB.CREATE_BY,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE 'Y' END Configured,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE tb.active END
+                   Active
+           FROM V_DSS_ORGANIZATION_CATEGORIES VW
+                LEFT OUTER JOIN DSS_ORGANIZATIONS ORG
+                   ON VW.ORGANIZATION_ID = ORG.ORGANIZATION_ID
+                LEFT OUTER JOIN TK_ORGANIZATION_WARRANTY TB
+                   ON     VW.CATEGORY_ID = TB.CATEGORY_ID
+                      AND VW.ORGANIZATION_ID = TB.ORGANIZATION_ID
+                LEFT OUTER JOIN DSS_SERVICE_WARRANTY WT
+                   ON WT.WARRANTY_SEQ = TB.WARRANTY_SEQ
+          WHERE     VW.ORGANIZATION_ID = p_ORGANIZATION_ID
+                AND VW.BRAND_CODE = P_BRAND_CODE
+                AND VW.CATEGORY_CODE = P_CATEGORY_CODE
+                AND VW.SUB_CATEGORY_CODE = P_SUB_CATEGORY_CODE;
+   END P_LoadBy4Levels;
+
+   PROCEDURE P_LoadBy3Levels (
+      p_ORGANIZATION_ID   IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE        IN     VARCHAR2,
+      P_CATEGORY_CODE     IN     VARCHAR2,
+      outCursor              OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT TB.LINEID,
+                ORG.OPERATING_UNIT,
+                VW.ORGANIZATION_ID,
+                VW.CATEGORY_ID,
+                VW.BRAND_CODE,
+                VW.BRNAD_NAME,
+                VW.BRAND_SEQ,
+                VW.SERVICE_BRANDCODE,
+                VW.CATEGORY_CODE,
+                VW.CATEGORY_DESCRIPTION,
+                VW.SUB_CATEGORY_CODE,
+                VW.SUBCATEGORY_DESCRIPTION,
+                VW.SUB_SUB_CATEGORY_CODE,
+                VW.SUBSUBCATEGORY_DESCRIPTION,
+                VW.PURCHASETYPE,
+                VW.ENABLED,
+                VW.BRAND_MAPPED,
+                WT.WARRANTY_SEQ,
+                WT.WARRANTY_CODE,
+                WT.WARRANTY_DESC,
+                WT.WARRANTY_ACTIVE,
+                WT.NO_YEARS,
+                WT.NO_MONTHS,
+                WT.NO_DAYS,
+                TB.CREATE_DATE,
+                TB.CREATE_BY,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE 'Y' END Configured,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE tb.active END
+                   Active
+           FROM V_DSS_ORGANIZATION_CATEGORIES VW
+                LEFT OUTER JOIN DSS_ORGANIZATIONS ORG
+                   ON VW.ORGANIZATION_ID = ORG.ORGANIZATION_ID
+                LEFT OUTER JOIN TK_ORGANIZATION_WARRANTY TB
+                   ON     VW.CATEGORY_ID = TB.CATEGORY_ID
+                      AND VW.ORGANIZATION_ID = TB.ORGANIZATION_ID
+                LEFT OUTER JOIN DSS_SERVICE_WARRANTY WT
+                   ON WT.WARRANTY_SEQ = TB.WARRANTY_SEQ
+          WHERE     VW.ORGANIZATION_ID = p_ORGANIZATION_ID
+                AND VW.BRAND_CODE = P_BRAND_CODE
+                AND VW.CATEGORY_CODE = P_CATEGORY_CODE;
+   END P_LoadBy3Levels;
+      PROCEDURE P_LoadBy2Levels (
+      p_ORGANIZATION_ID   IN     TK_ORGANIZATION_WARRANTY.ORGANIZATION_ID%TYPE,
+      P_BRAND_CODE        IN     VARCHAR2,
+      outCursor              OUT DSS.MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT TB.LINEID,
+                ORG.OPERATING_UNIT,
+                VW.ORGANIZATION_ID,
+                VW.CATEGORY_ID,
+                VW.BRAND_CODE,
+                VW.BRNAD_NAME,
+                VW.BRAND_SEQ,
+                VW.SERVICE_BRANDCODE,
+                VW.CATEGORY_CODE,
+                VW.CATEGORY_DESCRIPTION,
+                VW.SUB_CATEGORY_CODE,
+                VW.SUBCATEGORY_DESCRIPTION,
+                VW.SUB_SUB_CATEGORY_CODE,
+                VW.SUBSUBCATEGORY_DESCRIPTION,
+                VW.PURCHASETYPE,
+                VW.ENABLED,
+                VW.BRAND_MAPPED,
+                WT.WARRANTY_SEQ,
+                WT.WARRANTY_CODE,
+                WT.WARRANTY_DESC,
+                WT.WARRANTY_ACTIVE,
+                WT.NO_YEARS,
+                WT.NO_MONTHS,
+                WT.NO_DAYS,
+                TB.CREATE_DATE,
+                TB.CREATE_BY,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE 'Y' END Configured,
+                CASE WHEN TB.LINEID IS NULL THEN 'N' ELSE tb.active END
+                   Active
+           FROM V_DSS_ORGANIZATION_CATEGORIES VW
+                LEFT OUTER JOIN DSS_ORGANIZATIONS ORG
+                   ON VW.ORGANIZATION_ID = ORG.ORGANIZATION_ID
+                LEFT OUTER JOIN TK_ORGANIZATION_WARRANTY TB
+                   ON     VW.CATEGORY_ID = TB.CATEGORY_ID
+                      AND VW.ORGANIZATION_ID = TB.ORGANIZATION_ID
+                LEFT OUTER JOIN DSS_SERVICE_WARRANTY WT
+                   ON WT.WARRANTY_SEQ = TB.WARRANTY_SEQ
+          WHERE     VW.ORGANIZATION_ID = p_ORGANIZATION_ID
+                AND VW.BRAND_CODE = P_BRAND_CODE
+                ;
+   END P_LoadBy2Levels;
+END PKG_TK_ORGANIZATION_WARRANTY;
+/

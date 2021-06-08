@@ -1,0 +1,62 @@
+DROP VIEW DSS.V_LOCATIONS2;
+
+CREATE OR REPLACE FORCE VIEW DSS.V_LOCATIONS2
+(
+    OPERATING_UNIT
+   ,ORGANIZATION_ID
+   ,LOCATION_CODE
+   ,DESCRIPTION
+   ,LOCATION_TYPE
+   ,CITY
+   ,REGION
+   ,OUTLET_TYPE
+   ,OPTIMIZA_ENDABLED
+   ,CREATION_DATE
+   ,LAST_UPDATE_DATE
+   ,DISABLE_DATE
+   ,ACTIVE
+   ,SUSPENDED
+)
+AS
+    SELECT OPERATING_UNIT
+          ,INV.ORGANIZATION_ID
+          ,INV.SECONDARY_INVENTORY_NAME
+          ,INV.DESCRIPTION
+          ,INV.ATTRIBUTE1
+               LOCATION_TYPE
+          ,INV.ATTRIBUTE2
+               CITY
+          ,INV.ATTRIBUTE3
+               REGION
+          ,INV.ATTRIBUTE4
+               OUTLET_TYPE
+          ,NVL(INV.ATTRIBUTE7, 'No')
+               OPTIMIZA_ENDABLED
+          ,INV.CREATION_DATE
+          ,INV.LAST_UPDATE_DATE
+          ,INV.DISABLE_DATE
+          ,CASE
+               WHEN NVL(INV.DISABLE_DATE, SYSDATE) < SYSDATE
+               THEN
+                   'N'
+               ELSE
+                   'Y'
+           END
+               ACTIVE
+          ,CASE
+               WHEN NVL(XSI_DISABLE_DATE, SYSDATE) < SYSDATE
+               THEN
+                   'Y'
+               ELSE
+                   'N'
+           END
+               SUSPENDED
+    FROM SYN_SUBINVENTORIES INV
+         LEFT OUTER JOIN SYN_ORGANIZATIONS ORG
+             ON INV.ORGANIZATION_ID = ORG.ORGANIZATION_ID
+         LEFT OUTER JOIN SYN_SUSPENDED_SUBINVENTORIES SP
+             ON INV.ORGANIZATION_ID = SP.XSI_ORGANIZATION_ID
+                AND INV.SECONDARY_INVENTORY_NAME = XSI_SUB_INVENTORY_NAME;
+
+
+GRANT SELECT ON DSS.V_LOCATIONS2 TO SELDATA;

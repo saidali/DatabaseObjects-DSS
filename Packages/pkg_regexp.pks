@@ -1,0 +1,64 @@
+DROP PACKAGE DSS.PKG_REGEXP;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_REGEXP
+AS
+
+--select  PKG_REGEXP.REGEXP('12a333' , '^[[:xdigit:]]-[[^a-zA-Z]]+$') from dual
+ 
+   FUNCTION ISNUMBER (SSTRING VARCHAR2)
+      RETURN VARCHAR2 ;
+      
+            FUNCTION REGEXP (SSTRING VARCHAR2 , SSTRING2  varchar2)
+      RETURN VARCHAR2 ;
+END;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_REGEXP;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_REGEXP
+AS
+   FUNCTION ISNUMBER (SSTRING VARCHAR2)
+      RETURN VARCHAR2
+   IS
+      RESULTS   VARCHAR2 (3);
+   BEGIN
+      IF REGEXP_LIKE (SSTRING, '^[[:xdigit:]]-[[^a-zA-Z]]+$')
+      THEN
+         RESULTS := 'Yes';
+      ELSE
+         RESULTS := 'No';
+      END IF;
+
+      ---RESULTS := REGEXP_LIKE (SSTRING, '^[[:digit:]]$');
+      RETURN RESULTS;
+   EXCEPTION
+      WHEN OTHERS
+      THEN
+         RETURN 'No';
+   END ISNUMBER;
+   
+   
+      FUNCTION REGEXP (SSTRING VARCHAR2 , SSTRING2  varchar2)
+      RETURN VARCHAR2
+   IS
+      RESULTS   VARCHAR2 (3);
+   BEGIN
+      IF REGEXP_LIKE (SSTRING, SSTRING2)
+      THEN
+         RESULTS := 'Yes';
+      ELSE
+         RESULTS := 'No';
+      END IF;
+
+      ---RESULTS := REGEXP_LIKE (SSTRING, '^[[:digit:]]$');
+      RETURN RESULTS;
+   EXCEPTION
+      WHEN OTHERS
+      THEN
+         RETURN 'No';
+   END REGEXP;
+   
+   ---'^[^a-zA-Z]*$'
+END;
+/

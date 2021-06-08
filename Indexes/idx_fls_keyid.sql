@@ -1,0 +1,17 @@
+DROP INDEX DSS.IDX_FLS_KEYID;
+
+CREATE INDEX DSS.IDX_FLS_KEYID ON DSS.DSS_FILE_SERIALS
+(KEYID)
+LOGGING
+TABLESPACE AXM_TS_WMS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           );

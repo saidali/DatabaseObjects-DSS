@@ -1,0 +1,285 @@
+DROP PACKAGE DSS.PKG_SEC_APPLICATION_TABS;
+
+CREATE OR REPLACE PACKAGE DSS.PKG_SEC_APPLICATION_TABS
+AS
+
+   PROCEDURE P_LoadByUserName (
+      p_USER_NAME    IN     SEC_USER_FORM_ACCESS.USER_NAME%TYPE,
+      outCursor      OUT MYGEN.sqlcur) ; 
+   PROCEDURE P_LoadAll (outCursor OUT MYGEN.sqlcur);
+
+   PROCEDURE P_LoadByPrimaryKey (
+      p_TAB_ID    IN     SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      outCursor      OUT MYGEN.sqlcur);
+
+   PROCEDURE P_Update (
+      p_TAB_ID          IN SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      p_POSTION_INDEX   IN SEC_APPLICATION_TABS.POSTION_INDEX%TYPE,
+      p_TAB_NAME        IN SEC_APPLICATION_TABS.TAB_NAME%TYPE,
+      p_TEXT            IN SEC_APPLICATION_TABS.TEXT%TYPE,
+      p_HELP_URL        IN SEC_APPLICATION_TABS.HELP_URL%TYPE,
+      p_CREATE_DATE     IN SEC_APPLICATION_TABS.CREATE_DATE%TYPE,
+      p_ENABLED         IN SEC_APPLICATION_TABS.ENABLED%TYPE,
+      p_HIDDEN          IN SEC_APPLICATION_TABS.HIDDEN%TYPE,
+      p_ICON            IN SEC_APPLICATION_TABS.ICON%TYPE,
+      p_CREATE_BY       IN SEC_APPLICATION_TABS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1      IN SEC_APPLICATION_TABS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2      IN SEC_APPLICATION_TABS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3      IN SEC_APPLICATION_TABS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4      IN SEC_APPLICATION_TABS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5      IN SEC_APPLICATION_TABS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6      IN SEC_APPLICATION_TABS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7      IN SEC_APPLICATION_TABS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8      IN SEC_APPLICATION_TABS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9      IN SEC_APPLICATION_TABS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10     IN SEC_APPLICATION_TABS.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Insert (
+      p_TAB_ID          IN OUT SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      p_POSTION_INDEX   IN     SEC_APPLICATION_TABS.POSTION_INDEX%TYPE,
+      p_TAB_NAME        IN     SEC_APPLICATION_TABS.TAB_NAME%TYPE,
+      p_TEXT            IN     SEC_APPLICATION_TABS.TEXT%TYPE,
+      p_HELP_URL        IN     SEC_APPLICATION_TABS.HELP_URL%TYPE,
+      p_CREATE_DATE     IN     SEC_APPLICATION_TABS.CREATE_DATE%TYPE,
+      p_ENABLED         IN     SEC_APPLICATION_TABS.ENABLED%TYPE,
+      p_HIDDEN          IN     SEC_APPLICATION_TABS.HIDDEN%TYPE,
+      p_ICON            IN     SEC_APPLICATION_TABS.ICON%TYPE,
+      p_CREATE_BY       IN     SEC_APPLICATION_TABS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1      IN     SEC_APPLICATION_TABS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2      IN     SEC_APPLICATION_TABS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3      IN     SEC_APPLICATION_TABS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4      IN     SEC_APPLICATION_TABS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5      IN     SEC_APPLICATION_TABS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6      IN     SEC_APPLICATION_TABS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7      IN     SEC_APPLICATION_TABS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8      IN     SEC_APPLICATION_TABS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9      IN     SEC_APPLICATION_TABS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10     IN     SEC_APPLICATION_TABS.ATTRIBUTE10%TYPE);
+
+   PROCEDURE P_Delete (p_TAB_ID IN SEC_APPLICATION_TABS.TAB_ID%TYPE);
+END PKG_SEC_APPLICATION_TABS;
+/
+
+
+DROP PACKAGE BODY DSS.PKG_SEC_APPLICATION_TABS;
+
+CREATE OR REPLACE PACKAGE BODY DSS.PKG_SEC_APPLICATION_TABS
+AS
+   PROCEDURE P_LoadByPrimaryKey (
+      p_TAB_ID    IN     SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      outCursor      OUT MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT TAB_ID,
+                POSTION_INDEX,
+                TAB_NAME,
+                TEXT,
+                HELP_URL,
+                CREATE_DATE,
+                ENABLED,
+                HIDDEN,
+                ICON,
+                CREATE_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM SEC_APPLICATION_TABS
+          WHERE TAB_ID = p_TAB_ID;
+   END P_LoadByPrimaryKey;
+
+
+   PROCEDURE P_LoadByUserName (
+      p_USER_NAME    IN     SEC_USER_FORM_ACCESS.USER_NAME%TYPE,
+      outCursor      OUT MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+SELECT TAB.TAB_ID,
+       TAB.POSTION_INDEX,
+       TAB.TAB_NAME,
+       TAB.TEXT,
+       TAB.HELP_URL,
+       TAB.CREATE_DATE,
+       TAB.ENABLED,
+       TAB.HIDDEN,
+       TAB.ICON,
+       TAB.CREATE_BY,
+       TAB.ATTRIBUTE1,
+       TAB.ATTRIBUTE2,
+       TAB.ATTRIBUTE3,
+       TAB.ATTRIBUTE4,
+       TAB.ATTRIBUTE5,
+       TAB.ATTRIBUTE6,
+       TAB.ATTRIBUTE7,
+       TAB.ATTRIBUTE8,
+       TAB.ATTRIBUTE9,
+       TAB.ATTRIBUTE10
+  FROM SEC_APPLICATION_TABS TAB
+ WHERE tab_id IN (SELECT DISTINCT tab_id
+                    FROM    SEC_APPLICATION_FORMS FRM
+                         LEFT OUTER JOIN
+                            SEC_USER_FORM_ACCESS USRACC
+                         ON FRM.FORM_ID = USRACC.FORM_ID
+                   WHERE LOWER (USER_NAME) = LOWER (p_USER_NAME) AND USRACC.ENABLED = 'Y'  );
+   END P_LoadByUserName;
+
+
+   PROCEDURE P_LoadAll (outCursor OUT MYGEN.sqlcur)
+   IS
+   BEGIN
+      OPEN outCursor FOR
+         SELECT TAB_ID,
+                POSTION_INDEX,
+                TAB_NAME,
+                TEXT,
+                HELP_URL,
+                CREATE_DATE,
+                ENABLED,
+                HIDDEN,
+                ICON,
+                CREATE_BY,
+                ATTRIBUTE1,
+                ATTRIBUTE2,
+                ATTRIBUTE3,
+                ATTRIBUTE4,
+                ATTRIBUTE5,
+                ATTRIBUTE6,
+                ATTRIBUTE7,
+                ATTRIBUTE8,
+                ATTRIBUTE9,
+                ATTRIBUTE10
+           FROM SEC_APPLICATION_TABS;
+   END P_LoadAll;
+
+
+   PROCEDURE P_Update (
+      p_TAB_ID          IN SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      p_POSTION_INDEX   IN SEC_APPLICATION_TABS.POSTION_INDEX%TYPE,
+      p_TAB_NAME        IN SEC_APPLICATION_TABS.TAB_NAME%TYPE,
+      p_TEXT            IN SEC_APPLICATION_TABS.TEXT%TYPE,
+      p_HELP_URL        IN SEC_APPLICATION_TABS.HELP_URL%TYPE,
+      p_CREATE_DATE     IN SEC_APPLICATION_TABS.CREATE_DATE%TYPE,
+      p_ENABLED         IN SEC_APPLICATION_TABS.ENABLED%TYPE,
+      p_HIDDEN          IN SEC_APPLICATION_TABS.HIDDEN%TYPE,
+      p_ICON            IN SEC_APPLICATION_TABS.ICON%TYPE,
+      p_CREATE_BY       IN SEC_APPLICATION_TABS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1      IN SEC_APPLICATION_TABS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2      IN SEC_APPLICATION_TABS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3      IN SEC_APPLICATION_TABS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4      IN SEC_APPLICATION_TABS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5      IN SEC_APPLICATION_TABS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6      IN SEC_APPLICATION_TABS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7      IN SEC_APPLICATION_TABS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8      IN SEC_APPLICATION_TABS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9      IN SEC_APPLICATION_TABS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10     IN SEC_APPLICATION_TABS.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      UPDATE SEC_APPLICATION_TABS
+         SET TAB_ID = p_TAB_ID,
+             POSTION_INDEX = p_POSTION_INDEX,
+             TAB_NAME = p_TAB_NAME,
+             TEXT = p_TEXT,
+             HELP_URL = p_HELP_URL,
+             CREATE_DATE = p_CREATE_DATE,
+             ENABLED = p_ENABLED,
+             HIDDEN = p_HIDDEN,
+             ICON = p_ICON,
+             CREATE_BY = p_CREATE_BY,
+             ATTRIBUTE1 = p_ATTRIBUTE1,
+             ATTRIBUTE2 = p_ATTRIBUTE2,
+             ATTRIBUTE3 = p_ATTRIBUTE3,
+             ATTRIBUTE4 = p_ATTRIBUTE4,
+             ATTRIBUTE5 = p_ATTRIBUTE5,
+             ATTRIBUTE6 = p_ATTRIBUTE6,
+             ATTRIBUTE7 = p_ATTRIBUTE7,
+             ATTRIBUTE8 = p_ATTRIBUTE8,
+             ATTRIBUTE9 = p_ATTRIBUTE9,
+             ATTRIBUTE10 = p_ATTRIBUTE10
+       WHERE TAB_ID = p_TAB_ID;
+   END P_Update;
+
+
+   PROCEDURE P_Insert (
+      p_TAB_ID          IN OUT SEC_APPLICATION_TABS.TAB_ID%TYPE,
+      p_POSTION_INDEX   IN     SEC_APPLICATION_TABS.POSTION_INDEX%TYPE,
+      p_TAB_NAME        IN     SEC_APPLICATION_TABS.TAB_NAME%TYPE,
+      p_TEXT            IN     SEC_APPLICATION_TABS.TEXT%TYPE,
+      p_HELP_URL        IN     SEC_APPLICATION_TABS.HELP_URL%TYPE,
+      p_CREATE_DATE     IN     SEC_APPLICATION_TABS.CREATE_DATE%TYPE,
+      p_ENABLED         IN     SEC_APPLICATION_TABS.ENABLED%TYPE,
+      p_HIDDEN          IN     SEC_APPLICATION_TABS.HIDDEN%TYPE,
+      p_ICON            IN     SEC_APPLICATION_TABS.ICON%TYPE,
+      p_CREATE_BY       IN     SEC_APPLICATION_TABS.CREATE_BY%TYPE,
+      p_ATTRIBUTE1      IN     SEC_APPLICATION_TABS.ATTRIBUTE1%TYPE,
+      p_ATTRIBUTE2      IN     SEC_APPLICATION_TABS.ATTRIBUTE2%TYPE,
+      p_ATTRIBUTE3      IN     SEC_APPLICATION_TABS.ATTRIBUTE3%TYPE,
+      p_ATTRIBUTE4      IN     SEC_APPLICATION_TABS.ATTRIBUTE4%TYPE,
+      p_ATTRIBUTE5      IN     SEC_APPLICATION_TABS.ATTRIBUTE5%TYPE,
+      p_ATTRIBUTE6      IN     SEC_APPLICATION_TABS.ATTRIBUTE6%TYPE,
+      p_ATTRIBUTE7      IN     SEC_APPLICATION_TABS.ATTRIBUTE7%TYPE,
+      p_ATTRIBUTE8      IN     SEC_APPLICATION_TABS.ATTRIBUTE8%TYPE,
+      p_ATTRIBUTE9      IN     SEC_APPLICATION_TABS.ATTRIBUTE9%TYPE,
+      p_ATTRIBUTE10     IN     SEC_APPLICATION_TABS.ATTRIBUTE10%TYPE)
+   IS
+   BEGIN
+      SELECT SEC_APPLICATION_tab_ID.NEXTVAL INTO p_TAB_ID FROM DUAL;
+
+      INSERT INTO SEC_APPLICATION_TABS (TAB_ID,
+                                        POSTION_INDEX,
+                                        TAB_NAME,
+                                        TEXT,
+                                        HELP_URL,
+                                        CREATE_DATE,
+                                        ENABLED,
+                                        HIDDEN,
+                                        ICON,
+                                        CREATE_BY,
+                                        ATTRIBUTE1,
+                                        ATTRIBUTE2,
+                                        ATTRIBUTE3,
+                                        ATTRIBUTE4,
+                                        ATTRIBUTE5,
+                                        ATTRIBUTE6,
+                                        ATTRIBUTE7,
+                                        ATTRIBUTE8,
+                                        ATTRIBUTE9,
+                                        ATTRIBUTE10)
+           VALUES (p_TAB_ID,
+                   CASE WHEN NVL(p_POSTION_INDEX,0) = 0  THEN p_TAB_ID END ,
+                   p_TAB_NAME,
+                   p_TEXT,
+                   p_HELP_URL,
+                   p_CREATE_DATE,
+                   p_ENABLED,
+                   p_HIDDEN,
+                   p_ICON,
+                   p_CREATE_BY,
+                   p_ATTRIBUTE1,
+                   p_ATTRIBUTE2,
+                   p_ATTRIBUTE3,
+                   p_ATTRIBUTE4,
+                   p_ATTRIBUTE5,
+                   p_ATTRIBUTE6,
+                   p_ATTRIBUTE7,
+                   p_ATTRIBUTE8,
+                   p_ATTRIBUTE9,
+                   p_ATTRIBUTE10);
+   END P_Insert;
+
+   PROCEDURE P_Delete (p_TAB_ID IN SEC_APPLICATION_TABS.TAB_ID%TYPE)
+   IS
+   BEGIN
+      DELETE FROM SEC_APPLICATION_TABS
+            WHERE TAB_ID = p_TAB_ID;
+   END P_Delete;
+END PKG_SEC_APPLICATION_TABS;
+/

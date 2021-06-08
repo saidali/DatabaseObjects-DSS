@@ -1,0 +1,104 @@
+DROP VIEW DSS.V_INVOICE_SO_HEADER;
+
+CREATE OR REPLACE FORCE VIEW DSS.V_INVOICE_SO_HEADER
+(
+    CUSTOMER_TRX_ID
+   ,INVOICE_NUMBER
+   ,CUST_TRX_TYPE_ID
+   ,INVOICE_DATE
+   ,BATCH_SOURCE_ID
+   ,BILL_TO_CUSTOMER_ID
+   ,BILL_TO_SITE_USE_ID
+   ,PURCHASE_ORDER
+   ,SHIP_TO_SITE_USE_ID
+   ,SOLD_TO_CUSTOMER_ID
+   ,PRIMARY_SALESREP_ID
+   ,SALESMAN_NAME
+   ,CURR_CODE
+   ,INTERFACE_HEADER_CONTEXT
+   ,ORDER_NUMBER
+   ,ORDERREF
+   ,ATTRIBUTE1
+   ,ATTRIBUTE2
+   ,PAYMENT_TERM
+   ,TERM_ID
+   ,CUSTNAME
+   ,CUST_NO
+   ,ORG_ID
+   ,TAX_REFERENCE
+   ,ADDRESS_1
+   ,ADDRESS_2
+   ,ADDRESS_3
+   ,TIN_NO
+)
+AS
+    SELECT CUSTOMER_TRX_ID
+          ,TRX_NUMBER
+               INVOICE_NUMBER
+          ,CUST_TRX_TYPE_ID
+          ,TRX_DATE
+               INVOICE_DATE
+          ,BATCH_SOURCE_ID
+          ,BILL_TO_CUSTOMER_ID
+          ,BILL_TO_SITE_USE_ID
+          ,PURCHASE_ORDER
+          ,SHIP_TO_SITE_USE_ID
+          ,SOLD_TO_CUSTOMER_ID
+          ,RCH.PRIMARY_SALESREP_ID
+          ,SR.NAME
+               SALESMAN_NAME
+          ,INVOICE_CURRENCY_CODE
+               CURR_CODE
+          ,INTERFACE_HEADER_CONTEXT
+          ,RCH.INTERFACE_HEADER_ATTRIBUTE1
+               ORDERNUMBER
+          ,CT_REFERENCE
+               ORDERREF
+          ,RCH.ATTRIBUTE1
+          ,RCH.ATTRIBUTE2
+          ,RT.DESCRIPTION
+               PAYMENT_TERM
+          ,RCH.TERM_ID
+          ,CASE
+               WHEN RCH.ORG_ID = 219
+               THEN
+                   CASE
+                       WHEN CUST.ACTUALNAME IS NOT NULL
+                       THEN
+                           CUST.ACTUALNAME
+                       ELSE
+                           CUST.CUSTOMER_NAME
+                   END
+               ELSE
+                   CUST.CUSTOMER_NAME
+           END
+               CUSTNAME
+          ,CUST.CUSTOMER_NUMBER
+               CUST_NO
+          ,RCH.ORG_ID
+          ,CUST.TAX_REFERENCE
+          ,ORG.ADDRESS_1
+          ,ORG.ADDRESS_2
+          ,ORG.ADDRESS_3
+          ,ORG.TIN_NO
+    FROM RA_CUSTOMER_TRX_ALL@AXMAPPS RCH
+         JOIN SYN_AR_CUSTOMERS CUST
+             ON CUST.CUSTOMER_ID = RCH.SOLD_TO_CUSTOMER_ID
+         LEFT JOIN RA_TERMS@AXMAPPS RT ON RT.TERM_ID = RCH.TERM_ID
+         JOIN RA_SALESREPS_ALL@AXMAPPS SR
+             ON SR.SALESREP_ID = RCH.PRIMARY_SALESREP_ID
+                AND SR.ORG_ID = RCH.ORG_ID
+         RIGHT JOIN DSS_ORGANIZATIONS ORG
+             ON ORG.OPERATING_UNIT = RCH.ORG_ID
+                AND ORG.ORGANIZATION_ID = CUST.WAREHOUSE_ID
+    WHERE 1 = 1
+          AND RCH.INTERFACE_HEADER_CONTEXT = 'ORDER ENTRY'
+          AND RCH.COMPLETE_FLAG = 'Y'
+--       AND  rch.org_id = '103'
+--       AND rch.trx_number = '24761917'
+-- AND  rch.org_id = '219'
+--AND rch.trx_number = '175100002';
+;
+
+
+GRANT SELECT ON DSS.V_INVOICE_SO_HEADER TO SELDATA;
